@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@style/styleHW.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.HelloController">
+   <children>
+      <ImageView fitHeight="292.0" fitWidth="328.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/OIP.jpg" />
+         </image></ImageView>
+      <Pane prefHeight="115.0" prefWidth="500.0">
+         <children>
+            <Button layoutX="70.0" layoutY="24.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="165.0" styleClass="buttons" text="Personale" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="High Tower Text Italic" size="25.0" />
+               </font></Button>
+            <Button fx:id="buttonUtents" layoutX="562.0" layoutY="24.0" mnemonicParsing="false" onAction="#switchToMenu" prefHeight="49.0" prefWidth="165.0" styleClass="buttons" text="Utente" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="High Tower Text Italic" size="25.0" />
+               </font></Button>
+         </children>
+      </Pane>
+   </children>
+</VBox>
