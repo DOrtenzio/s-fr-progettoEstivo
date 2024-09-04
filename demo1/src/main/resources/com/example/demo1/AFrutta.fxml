@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.FruttaController">
+    <children>
+        <BorderPane layoutX="6.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <left>
+                <VBox minWidth="-Infinity" prefHeight="200.0" prefWidth="435.0" styleClass="right-bar" stylesheets="@style/style.css" BorderPane.alignment="CENTER">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="110.0" prefWidth="200.0">
+                            <children>
+                                <Label prefHeight="49.0" prefWidth="128.0" text="Frutta" textFill="#878787">
+                                    <font>
+                                        <Font name="Cambria Bold" size="40.0" />
+                                    </font>
+                                </Label>
+                                <Label text="e altro" textFill="#878787">
+                                    <font>
+                                        <Font name="Cambria" size="40.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="114.0" prefWidth="389.0" stylesheets="@style/style.css" VBox.vgrow="NEVER">
+                            <VBox.margin>
+                                <Insets left="30.0" right="30.0" />
+                            </VBox.margin>
+                            <children>
+                                <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" styleClass="search-button" stylesheets="@style/style.css" text="Frutta" textFill="WHITE" />
+                                <Pane prefHeight="70.0" prefWidth="10.0" />
+                                <Button mnemonicParsing="false" onAction="#switchToVerduraSimple" prefHeight="40.0" prefWidth="80.0" styleClass="search-button" stylesheets="@style/style.css" text="Verdura" textFill="WHITE" />
+                                <Pane prefHeight="70.0" prefWidth="10.0" />
+                                <Button mnemonicParsing="false" onAction="#switchToPreparati" prefHeight="40.0" prefWidth="80.0" styleClass="search-button" stylesheets="@style/style.css" text="Preparati" textFill="WHITE" />
+                                <Pane prefHeight="70.0" prefWidth="10.0" />
+                                <Button mnemonicParsing="false" onAction="#switchToMenu" prefHeight="40.0" prefWidth="80.0" styleClass="search-button" stylesheets="@style/style.css" text="Home" textFill="WHITE" />
+                            </children>
+                            <styleClass>
+                                <String fx:value="search-box" />
+                                <String fx:value="shadow" />
+                            </styleClass>
+                        </HBox>
+                        <Pane prefHeight="57.0" prefWidth="435.0" VBox.vgrow="ALWAYS" />
+                        <VBox fx:id="chosenFruitCard" alignment="CENTER" prefHeight="535.0" prefWidth="100.0" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                            <VBox.margin>
+                                <Insets left="50.0" right="50.0" />
+                            </VBox.margin>
+                            <children>
+                                <HBox prefHeight="60.0" prefWidth="335.0">
+                                            <children>
+                                                <Label fx:id="fruitNameLable" prefHeight="44.0" prefWidth="252.0" text="Il tuo carrello" textFill="#828282">
+                                                    <font>
+                                                        <Font name="Cambria" size="36.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label fx:id="totalLabel" contentDisplay="RIGHT" prefHeight="44.0" prefWidth="108.0" text="0.0€" textAlignment="RIGHT">
+                                                    <font>
+                                                        <Font name="Cambria" size="23.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                            <VBox.margin>
+                                                <Insets left="20.0" top="30.0" />
+                                            </VBox.margin>
+                                        </HBox>
+                                        <AnchorPane prefHeight="353.0" prefWidth="335.0">
+                                            <children>
+                                                <ListView fx:id="cartListView" layoutX="4.0" layoutY="1.0" prefHeight="296.0" prefWidth="328.0" styleClass="chosen-items-cart" stylesheets="@style/style.css" />
+                                            </children></AnchorPane>
+                                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="335.0">
+                                            <VBox.margin>
+                                                <Insets bottom="20.0" top="20.0" />
+                                            </VBox.margin>
+                                            <children>
+                                                <Separator prefHeight="0.0" prefWidth="118.0" />
+                                                <Separator prefHeight="0.0" prefWidth="118.0" />
+                                            </children>
+                                    </HBox>
+                                <Button fx:id="bottOk" mnemonicParsing="false" onMouseClicked="#switchToCart" prefHeight="50.0" prefWidth="270.0" styleClass="search-button" stylesheets="@style/style.css" text="VAI AL CARRELLO" textFill="WHITE">
+                                    <VBox.margin>
+                                        <Insets bottom="20.0" top="30.0" />
+                                    </VBox.margin>
+                                    <font>
+                                        <Font name="System Bold" size="18.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </VBox>
+                        <Pane prefHeight="57.0" prefWidth="435.0" VBox.vgrow="ALWAYS" />
+                    </children>
+                </VBox>
+            </left>
+            <center>
+                <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="65.0" prefWidth="200.0">
+                            <VBox.margin>
+                                <Insets left="20.0" right="20.0" />
+                            </VBox.margin>
+                            <children>
+                                <Label prefHeight="30.0" prefWidth="104.0" text="Ci trovi a" textFill="#878787">
+                                    <font>
+                                        <Font name="Cambria Bold" size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label prefHeight="30.0" prefWidth="211.0" text="Curno, via mazzancolle" textFill="#878787" underline="true">
+                                    <font>
+                                        <Font name="Cambria" size="18.0" />
+                                    </font>
+                                </Label>
+                                <Pane prefHeight="66.0" prefWidth="202.0" HBox.hgrow="ALWAYS" />
+                                <Label onMouseClicked="#switchToProductsView" prefHeight="62.0" prefWidth="49.0" text="^_^" textFill="#878787">
+                                    <font>
+                                        <Font name="Cambria" size="18.0" />
+                                    </font>
+                                </Label>
+                                <ImageView fx:id="cart" fitHeight="50.0" fitWidth="55.0" onMouseClicked="#switchToCart" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@img/ic_cart.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="585.0">
+                            <children>
+                                <Pane prefHeight="100.0" prefWidth="37.0" />
+                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="376.0" styleClass="free-delivery-card" stylesheets="@style/style.css">
+                                    <children>
+                                        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="214.0">
+                                            <children>
+                                                <Label prefHeight="30.0" prefWidth="196.0" text="Frutta e verdura fresca" textFill="#878787">
+                                                    <font>
+                                                        <Font name="Cambria Bold" size="18.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label prefHeight="20.0" prefWidth="157.0" text="consegnata tutti i giorni" textFill="#878787">
+                                                    <font>
+                                                        <Font name="Cambria" size="15.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </VBox>
+                                        <ImageView fitHeight="49.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@img/ic_delivery.png" />
+                                            </image>
+                                        </ImageView>
+                                    </children>
+                                </HBox>
+                                <Pane prefHeight="84.0" prefWidth="96.0" HBox.hgrow="ALWAYS" />
+                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="364.0" styleClass="shopping-online-card" stylesheets="@style/style.css">
+                                    <children>
+                                        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                            <children>
+                                                <Label prefHeight="64.0" prefWidth="190.0" text="Orari flessibili per tutti" textAlignment="CENTER" textFill="#878787" wrapText="true">
+                                                    <font>
+                                                        <Font name="Cambria Bold" size="18.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label prefHeight="20.0" prefWidth="144.0" text="8:00 -19:00 Mart-Dom" textFill="#878787">
+                                                    <font>
+                                                        <Font name="Cambria" size="15.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </VBox>
+                                        <ImageView fitHeight="49.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@img/ic_stopwatch.png" />
+                                            </image>
+                                        </ImageView>
+                                    </children>
+                                </HBox>
+                                <Pane prefHeight="84.0" prefWidth="96.0" />
+                            </children>
+                            <VBox.margin>
+                                <Insets left="20.0" right="20.0" top="10.0" />
+                            </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                            <children>
+                                <AnchorPane prefHeight="474.0" prefWidth="627.0">
+                                    <children>
+                                        <Label fx:id="textPres" layoutX="14.0" layoutY="14.0" prefHeight="48.0" prefWidth="476.0" text="La nostra frutta" textFill="#828282">
+                                            <font>
+                                                <Font name="Cambria" size="36.0" />
+                                            </font></Label>
+                              <ScrollPane layoutX="14.0" layoutY="62.0" prefHeight="411.0" prefWidth="582.0">
+                                 <content>
+                                    <VBox prefHeight="403.0" prefWidth="566.0">
+                                       <children>
+                                           <VBox prefHeight="300.0" prefWidth="566.0">
+                                               <HBox prefHeight="257.0" prefWidth="566.0">
+                                                   <children>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="25.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="231.0" prefWidth="254.0" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="91.0" text="Mele" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/galafruit_mele-300x300.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso0" layoutX="25.0" layoutY="181.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Button layoutX="197.0" layoutY="182.0" mnemonicParsing="false" onAction="#aggMele" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="0.99€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Ue" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="7.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="221.0" prefWidth="255.0" scaleShape="false" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="91.0" text="Pere" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/pere.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso1" layoutX="25.0" layoutY="182.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="0.99€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Ue" />
+                                                               <Button layoutX="198.0" layoutY="183.0" mnemonicParsing="false" onAction="#aggPere" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="151.0" prefWidth="25.0" />
+                                                   </children>
+                                               </HBox>
+                                               <AnchorPane prefHeight="43.0" prefWidth="566.0">
+                                                   <Label layoutX="25.0" layoutY="5.0" text="  " textFill="#f4f4f4" />
+                                               </AnchorPane>
+                                           </VBox>
+                                           <VBox prefHeight="300.0" prefWidth="566.0">
+                                               <HBox prefHeight="257.0" prefWidth="566.0">
+                                                   <children>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="25.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="231.0" prefWidth="254.0" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="91.0" text="Banane" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/galafruit_banane-300x300.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso2" layoutX="25.0" layoutY="181.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Button layoutX="197.0" layoutY="182.0" mnemonicParsing="false" onAction="#aggBanane" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="1.79€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Ue" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="7.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="221.0" prefWidth="255.0" scaleShape="false" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="91.0" text="Arance" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/galafruit_arance-300x300.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso3" layoutX="25.0" layoutY="182.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="1.49€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Italia" />
+                                                               <Button layoutX="198.0" layoutY="183.0" mnemonicParsing="false" onAction="#aggArance" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="151.0" prefWidth="25.0" />
+                                                   </children>
+                                               </HBox>
+                                               <AnchorPane prefHeight="43.0" prefWidth="566.0">
+                                                   <Label layoutX="25.0" layoutY="5.0" text="  " textFill="#f4f4f4" />
+                                               </AnchorPane>
+                                           </VBox>
+                                           <VBox prefHeight="300.0" prefWidth="566.0">
+                                               <HBox prefHeight="257.0" prefWidth="566.0">
+                                                   <children>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="25.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="231.0" prefWidth="254.0" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="91.0" text="Mandaranci" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/galafruit_mandarini-300x300.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso4" layoutX="25.0" layoutY="181.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Button layoutX="197.0" layoutY="182.0" mnemonicParsing="false" onAction="#aggMandarini" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="2.74€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Spagna" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="7.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="221.0" prefWidth="255.0" scaleShape="false" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="91.0" text="Fragole" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/galafruit_fragole-300x300.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso5" layoutX="25.0" layoutY="182.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="4.99€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Spagna" />
+                                                               <Button layoutX="198.0" layoutY="183.0" mnemonicParsing="false" onAction="#aggFragole" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="151.0" prefWidth="25.0" />
+                                                   </children>
+                                               </HBox>
+                                               <AnchorPane prefHeight="43.0" prefWidth="566.0">
+                                                   <Label layoutX="25.0" layoutY="5.0" text="  " textFill="#f4f4f4" />
+                                               </AnchorPane>
+                                           </VBox>
+                                           <VBox prefHeight="300.0" prefWidth="566.0">
+                                               <HBox prefHeight="257.0" prefWidth="566.0">
+                                                   <children>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="25.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="231.0" prefWidth="254.0" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="91.0" text="Ciliegie" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/galafruit_ciliegie-300x300.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso6" layoutX="25.0" layoutY="181.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Button layoutX="197.0" layoutY="182.0" mnemonicParsing="false" onAction="#aggCiliegie" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="7.99€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Italia" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="7.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="221.0" prefWidth="255.0" scaleShape="false" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="91.0" text="Uva" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/galafruit_uva-300x300.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso7" layoutX="25.0" layoutY="182.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="2.39€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Ue" />
+                                                               <Button layoutX="198.0" layoutY="183.0" mnemonicParsing="false" onAction="#aggUva" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="151.0" prefWidth="25.0" />
+                                                   </children>
+                                               </HBox>
+                                               <AnchorPane prefHeight="43.0" prefWidth="566.0">
+                                                   <Label layoutX="25.0" layoutY="5.0" text="  " textFill="#f4f4f4" />
+                                               </AnchorPane>
+                                           </VBox>
+                                           <VBox prefHeight="300.0" prefWidth="566.0">
+                                               <HBox prefHeight="257.0" prefWidth="566.0">
+                                                   <children>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="25.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="231.0" prefWidth="254.0" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="91.0" text="Kiwi" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/galafruit_kiwi-300x300.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso8" layoutX="25.0" layoutY="181.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Button layoutX="197.0" layoutY="182.0" mnemonicParsing="false" onAction="#aggKiwi" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="2.39€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Italia" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="7.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="221.0" prefWidth="255.0" scaleShape="false" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="91.0" text="Pesche" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/galafruit_pesche-300x300.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso9" layoutX="25.0" layoutY="182.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="2.99€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Italia" />
+                                                               <Button layoutX="198.0" layoutY="183.0" mnemonicParsing="false" onAction="#aggPesche" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="151.0" prefWidth="25.0" />
+                                                   </children>
+                                               </HBox>
+                                               <AnchorPane prefHeight="43.0" prefWidth="566.0">
+                                                   <Label layoutX="25.0" layoutY="5.0" text="  " textFill="#f4f4f4" />
+                                               </AnchorPane>
+                                           </VBox>
+                                           <VBox prefHeight="300.0" prefWidth="566.0">
+                                               <HBox prefHeight="257.0" prefWidth="566.0">
+                                                   <children>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="25.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="231.0" prefWidth="254.0" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="9.0" layoutY="14.0" prefHeight="26.0" prefWidth="119.0" text="Albicocche" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/albicocca.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso10" layoutX="25.0" layoutY="181.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Button layoutX="197.0" layoutY="182.0" mnemonicParsing="false" onAction="#aggAlbicocche" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="3.99€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Ue" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="7.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="221.0" prefWidth="255.0" scaleShape="false" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="91.0" text="Susine" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/galafruit_susine-300x300.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso11" layoutX="25.0" layoutY="182.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="2.99€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Ue" />
+                                                               <Button layoutX="198.0" layoutY="183.0" mnemonicParsing="false" onAction="#aggSusine" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="151.0" prefWidth="25.0" />
+                                                   </children>
+                                               </HBox>
+                                               <AnchorPane prefHeight="43.0" prefWidth="566.0">
+                                                   <Label layoutX="25.0" layoutY="5.0" text="  " textFill="#f4f4f4" />
+                                               </AnchorPane>
+                                           </VBox>
+                                           <VBox prefHeight="300.0" prefWidth="566.0">
+                                               <HBox prefHeight="257.0" prefWidth="566.0">
+                                                   <children>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="25.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="231.0" prefWidth="254.0" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="91.0" text="Anguria" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/angurie.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso12" layoutX="25.0" layoutY="181.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Button layoutX="197.0" layoutY="182.0" mnemonicParsing="false" onAction="#aggAnguria" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="0.99€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Spagna" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="7.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="221.0" prefWidth="255.0" scaleShape="false" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="91.0" text="Meloni" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/galafruit_meloni-300x300.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso13" layoutX="25.0" layoutY="182.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="0.99€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Italia" />
+                                                               <Button layoutX="198.0" layoutY="183.0" mnemonicParsing="false" onAction="#aggMelone" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="151.0" prefWidth="25.0" />
+                                                   </children>
+                                               </HBox>
+                                               <AnchorPane prefHeight="43.0" prefWidth="566.0">
+                                                   <Label layoutX="25.0" layoutY="5.0" text="  " textFill="#f4f4f4" />
+                                               </AnchorPane>
+                                           </VBox>
+                                           <VBox prefHeight="300.0" prefWidth="566.0">
+                                               <HBox prefHeight="257.0" prefWidth="566.0">
+                                                   <children>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="25.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="231.0" prefWidth="254.0" styleClass="chosen-fruit-card" stylesheets="@style/style.css">
+                                                           <children>
+                                                               <Label layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="91.0" text="Prugne" textFill="#828282">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <ImageView fitHeight="113.0" fitWidth="170.0" layoutX="73.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                                                   <Image url="@img/frutta/galafruit_prugne-300x300.jpg" />
+                                                               </ImageView>
+                                                               <ComboBox fx:id="peso14" layoutX="25.0" layoutY="181.0" prefHeight="32.0" prefWidth="165.0" promptText="0.0" styleClass="comboBox" stylesheets="@style/style.css" />
+                                                               <Button layoutX="197.0" layoutY="182.0" mnemonicParsing="false" onAction="#aggPrugne" prefHeight="30.0" prefWidth="42.0" styleClass="free-delivery-card" stylesheets="@style/style.css" text="+" />
+                                                               <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="1.79€ /Kg">
+                                                                   <font>
+                                                                       <Font name="Cambria" size="24.0" />
+                                                                   </font></Label>
+                                                               <Label layoutX="25.0" layoutY="157.0" text="Origine : Italia" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                       <AnchorPane prefHeight="106.0" prefWidth="7.0" />
+                                                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="221.0" prefWidth="255.0" scaleShape="false" />
+                                                       <AnchorPane prefHeight="151.0" prefWidth="25.0" />
+                                                   </children>
+                                               </HBox>
+                                               <AnchorPane prefHeight="43.0" prefWidth="566.0">
+                                                   <Label layoutX="25.0" layoutY="5.0" text="  " textFill="#f4f4f4" />
+                                               </AnchorPane>
+                                           </VBox>
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </ScrollPane>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>
