@@ -513,7 +513,7 @@ public class VerduraInsalateController {
             immDiErrore();
         else{
             String selectedText = radioSelezionato.getText();
-            aggiuntaProdotto("Lattuga "+selectedText,2.90,peso25);
+            aggiuntaProdotto("Lattuga "+selectedText,2.90,peso26);
         }
     }
     //Metodo per il cambio immagine quando si seleziona il relativo radiobutton
