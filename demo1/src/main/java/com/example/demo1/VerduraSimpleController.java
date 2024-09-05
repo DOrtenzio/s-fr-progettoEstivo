@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class VerduraSimpleController {
     @FXML
-    private ComboBox<Double> peso1,peso2,peso3;
+    private ComboBox<Double> peso1,peso2,peso3; //Scegli il peso dei vari prodotti in questo caso i pezzi
     @FXML
     private Button bottOk;
     @FXML
@@ -32,8 +32,9 @@ public class VerduraSimpleController {
     @FXML
     private ToggleGroup carciofi,cavolfiore;
     @FXML
-    private ImageView imCarc,imCavol;
-    //Inizializzazione contatori peso
+    private ImageView imCarc,imCavol; //Immagini che cambiano in base al tipo selezionato
+
+    //Metodo per aggiornare il carrello a ogni "apertura" della scena e inizializzazione contatori peso
     @FXML
     public void initialize() {
         aggiornaSezCarrello();
@@ -41,40 +42,46 @@ public class VerduraSimpleController {
         populateComboBoxPezzi(peso1);
     }
 
-    //carrello: Sempre il solito metodo vai avanti grazie
+    //Metodo per aggiornare il carrello
     public void aggiornaSezCarrello() {
-        ShoppingCart cart = ShoppingCart.getInstance(); // Istanza carrello attuale
-        cartListView.getItems().clear(); // Pulisco tutti gli items nella lista a schermo
-        double total = 0.0; // Rifaccio il conto
+        cartListView.getItems().clear(); // Pulisco o meglio dire cancello tutti gli elementi nella ListView
+        double total = 0.0; // Variabile che indica il totale
 
-        ArrayList<String> prodotti = cart.getProdotti();
-        ArrayList<Double> prezzi = cart.getPrezzi();
-        ArrayList<Double> pesi = cart.getPesi();
-        String s;
+        //3 array list per prodotti, prezzi e pesi; ArrayList inizializzati con gli arraylist salvati in ShoppingCart (Vedi il file per il perchè)
+        ArrayList<String> prodotti = ShoppingCart.getInstance().getProdotti(); //Nomi dei prodotti
+        ArrayList<Double> prezzi = ShoppingCart.getInstance().getPrezzi(); //Prezzi dei prodotti
+        ArrayList<Double> pesi = ShoppingCart.getInstance().getPesi(); //Pesi degli articoli
+
+        String s; //Stringa comoda per scrivere il prodotto nella ListView
 
         for (int i = 0; i < prodotti.size(); i++) {
             HBox hbox = new HBox(); // Creiamo un HBox per contenere il testo e il pulsante
 
-            // Creiamo un Label per mostrare le informazioni del prodotto
+            // Creiamo un Label per mostrare le informazioni del prodotto, in base al tipo può essere o in pezzi singoli o in mazzi o in Kg
             if (prodotti.get(i).equalsIgnoreCase("carciofi normali") || prodotti.get(i).equalsIgnoreCase("carciofi romani") || prodotti.get(i).charAt(0) == '▸')
-                s = " pezzi - ";
+                s = " pezzi - "; //Carciofi e prodotti preparati indicati con la > nella posizione 0 della string sono venduti a pezzi
             else if (prodotti.get(i).equalsIgnoreCase("ravanelli"))
-                s=" mazzi - ";
+                s=" mazzi - "; //Solo i ravanelli li vendiamo in mazzi
             else
                 s=" kg - ";
+            //Label per ogni riga della ListView
             Label prodottoLabel = new Label("     "+prodotti.get(i) + " - " + arrotondaAlCent(pesi.get(i)) + s + prezzi.get(i) + " €");
             // Creiamo un pulsante "Rimuovi"
             Button removeButton = new Button("-");
             removeButton.getStyleClass().add("removeButton");
-            int index = i; // Necessario per catturare l'indice corretto per cancellare
+            int index = i; // Necessario per catturare l'indice corretto per cancellare da arraylist
             removeButton.setOnAction(e -> { //All'azione
                 // Rimuoviamo l'elemento dal carrello e aggiorniamo la vista dello "scontrino"
-                cart.removeProduct(index);
-                immDiErrore();
-                aggiornaSezCarrello();
+                ShoppingCart.getInstance().removeProduct(index); //Richiamo il metodo per cancellare passandogli l'indice
+                //Metodo immErr di FruttaController, semplicemente un cambio colore per 2 secondi
+                bottOk.setStyle("-fx-background-color: #E11518;");
+                PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                pause.setOnFinished(event -> bottOk.setStyle("-fx-background-color: #828282;")); //Risistemo il colore
+                pause.play();
+                aggiornaSezCarrello(); //Richiamo il metodo
             });
 
-            // Aggiungiamo il Label e il pulsante all'HBox
+            // Aggiungiamo il Label e il pulsante all'HBox dentro la ListView
             HBox.setHgrow(prodottoLabel, Priority.ALWAYS); // Consente al Label di occupare tutto lo spazio disponibile
             hbox.getChildren().addAll(removeButton,prodottoLabel);
             cartListView.getItems().add(hbox);
@@ -82,62 +89,74 @@ public class VerduraSimpleController {
             total += prezzi.get(i); //Aggiorno il totale
         }
 
-        total = arrotondaAlCent(total);
-        totalLabel.setText(total + " €");
+        total = arrotondaAlCent(total); //Arrotondo la cifra alla seconda dopo la virgola
+        totalLabel.setText(total + " €"); //Aggiorno la label con il totale
     }
+
     //Classe per arrotondare usando BigDecimal
     public static double arrotondaAlCent(double value) {
-        BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(2, RoundingMode.HALF_DOWN); // Arrotonda a 2 decimali
-        return bd.doubleValue();
+        BigDecimal bd = new BigDecimal(value); //bd è il nostro numero
+        bd = bd.setScale(2, RoundingMode.HALF_UP); // Arrotonda a 2 decimali
+        return bd.doubleValue(); //Lo restituisco in double per comodità
     }
 
     //Metodi per utilizzi secondari
     @FXML
-    private void immDiConferma () {
-        aggiornaSezCarrello(); //Lo metto qua perchè non ho voglia di inserirlo in tutti i metodi peso ¬_¬
-        bottOk.setStyle("-fx-background-color: #76DD4D;");
+    private void immDiConferma () { //Metodo che conferma l'aggiunta dei prodottti
+        aggiornaSezCarrello(); //Lo metto qua perchè non ho voglia di inserirlo in tutti i metodi peso ¬_¬, anche per risparmiare linee di codice
+        bottOk.setStyle("-fx-background-color: #76DD4D;"); //Verde
         // Crea una pausa di 2 secondi prima di ritornare a vecchio colore
-        PauseTransition pause = new PauseTransition(Duration.seconds(2));
-        pause.setOnFinished(event -> bottOk.setStyle("-fx-background-color: #828282;")); //Risistemo il testo
+        PauseTransition pause = new PauseTransition(Duration.seconds(2)); //Grigino
+        pause.setOnFinished(event -> bottOk.setStyle("-fx-background-color: #828282;")); //Risistemo il colore
         pause.play();
     }
-    private void immDiErrore () {
-        bottOk.setStyle("-fx-background-color: #E11518;");
-        // Crea una pausa di 2 secondi prima di ritornare a vecchio colore
-        PauseTransition pause = new PauseTransition(Duration.seconds(2));
-        pause.setOnFinished(event -> bottOk.setStyle("-fx-background-color: #828282;")); //Risistemo il testo
-        pause.play();
-    }
-    //Metodi aggiunta prodotti ####VERDURE####
     @FXML
-    public void aggAsparagi(){
-        aggiungiRiga("Asparagi",2.99*0.2,0.2); // aggiungiamo allo scontrino
-        immDiConferma(); //diamo un input visivo di ciò
+    private void immDiErrore () {
+        bottOk.setStyle("-fx-background-color: #E11518;"); //Rossastro
+        // Crea una pausa di 2 secondi prima di ritornare a vecchio colore
+        PauseTransition pause = new PauseTransition(Duration.seconds(2)); //Grigino
+        pause.setOnFinished(event -> bottOk.setStyle("-fx-background-color: #828282;")); //Risistemo il colore
+        pause.play();
+    }
+
+    //Metodi aggiunta verdure
+    //Nb: Quando i metodi sono tutti simili non commento
+    @FXML //Metodo unico per l'aggiunta
+    public void aggiuntaProdotto(String prodotto,double prezzoAlKg,ComboBox<Double> combo){
+        if (combo.getValue() == null)
+            immDiErrore(); //Se il peso è nullo non procedo e mostro un errore visivo
+        else{
+            double peso=Double.parseDouble(String.valueOf(combo.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
+            aggiungiProdotto(prodotto,arrotondaAlCent(prezzoAlKg*peso),peso); // aggiungiamo allo scontrino
+            immDiConferma(); //diamo un ingresso visivo di ciò
+        }
+    }
+    @FXML
+    public void aggAsparagi(){//Prodotto con peso fisso
+        aggiungiProdotto("Asparagi",2.99*0.2,0.2); // aggiungiamo allo scontrino
+        immDiConferma(); //diamo un ingresso visivo di ciò
     }
     @FXML
     public void aggCarciofi(){
         // Ottieni il RadioButton selezionato
-        RadioButton carciofiSelectedToggle = (RadioButton) carciofi.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso1.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) carciofi.getSelectedToggle();
+        if (peso1.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso1.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            double mon;
+            String selectedText = radioSelezionato.getText();
+            double mon;//Prezzo Variabile
             if (selectedText.equalsIgnoreCase("normali"))
                 mon=0.99;
             else
                 mon=1.29;
-            aggiungiRiga("Carciofi "+selectedText,mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto("Carciofi "+selectedText,mon,peso1);
         }
     }
     //Metodo per il cambio immagine quando si seleziona il relativo radiobutton
     @FXML
     public void radCarciofi(){
-        RadioButton carciofiSelectedToggle = (RadioButton) carciofi.getSelectedToggle();
-        String selectedText = carciofiSelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) carciofi.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("normali")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/galafruit_carciofi-300x300.jpg").toExternalForm());
             imCarc.setImage(newImage);
@@ -146,40 +165,32 @@ public class VerduraSimpleController {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/carciofo_romano.jpg").toExternalForm());
             imCarc.setImage(newImage);
         }
-        double mon;
+        double mon; //Prezzo variabile
         if (selectedText.equalsIgnoreCase("normali"))
             mon=0.99;
         else
             mon=1.29;
-        prezzoCarciofi.setText(mon+"€/Pz");
+        prezzoCarciofi.setText(mon+"€/Pz"); //Cambio il prezzo visibile
     }
     @FXML
     public void aggCarote(){
-        if (peso2.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso2.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Carote",1.99*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Carote",1.99,peso2);
     }
     @FXML
     public void aggCavolfiore(){
-        RadioButton carciofiSelectedToggle = (RadioButton) cavolfiore.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
+        RadioButton carciofiSelectedToggle = (RadioButton) cavolfiore.getSelectedToggle();
         if (peso3.getValue() == null || carciofiSelectedToggle == null)
             immDiErrore();
         else{
             String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso3.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Cavolfiore "+selectedText,2.89*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto("Cavolfiore "+selectedText,2.89,peso3);
         }
     }
     //Metodo per il cambio immagine quando si seleziona il relativo radiobutton
     @FXML
     public void radCavolfiori(){
-        RadioButton SelectedToggle = (RadioButton) cavolfiore.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) cavolfiore.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("bianco")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/cavolfiore.jpg").toExternalForm());
             imCavol.setImage(newImage);
@@ -196,15 +207,9 @@ public class VerduraSimpleController {
         }
     }
 
-    //Metodo per allestimenti, se così si può dire dei comboBox, si può usare adAll
-    private void populateComboBoxPezzi(ComboBox<Double> peso) {
-        for (double i = 10.00; i >= 1.00; i -= 1.00) {
-            peso.getItems().add(0, arrotondaAlCent(i));
-        }
-    }
     // Metodo per aggiungere una riga
-    public void aggiungiRiga(String prodotto, double prezzo, double peso) {
-        ShoppingCart.getInstance().addProduct(prodotto, prezzo, peso);
+    public void aggiungiProdotto(String prodotto, double prezzo, double peso) {
+        ShoppingCart.getInstance().addProduct(prodotto, arrotondaAlCent(prezzo), peso);
     }
 
     //Metodo per allestimenti, se così si può dire dei comboBox, si può usare adAll
@@ -213,68 +218,69 @@ public class VerduraSimpleController {
             peso.getItems().add(0, arrotondaAlCent(i));
         }
     }
+    //Metodo per allestimenti, se così si può dire dei comboBox, si può usare adAll
+    private void populateComboBoxPezzi(ComboBox<Double> peso) {
+        for (double i = 10.00; i >= 1.00; i -= 1.00) {
+            peso.getItems().add(0, arrotondaAlCent(i));
+        }
+    }
 
-
-    //Scambi tra le schermate
+    //Scambi tra le scene
     @FXML
     private void switchToProductsView (MouseEvent mouseEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AProdotti.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1040, 650);
-        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-        stage.setResizable(false); //Non permetto il ridemsionamento della finestra
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AProdotti.fxml")); //All'evento del mouse, click, passo alla schermata che mostra la divisione intermedia dei prodotti
+        Scene scene = new Scene(fxmlLoader.load(), 1040, 650);// Creo una nuova scena
+        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();//Prendo lo stage in atto e lo setto
+        stage.setResizable(false); //Non permetto il ridimensionamento della finestra per estetica
         stage.setScene(scene);
     }
     @FXML
     private void switchToCart (MouseEvent mouseEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ACart.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1040, 650);
-        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-        stage.setResizable(false); //Non permetto il ridemsionamento della finestra
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ACart.fxml")); //Passo al carrello
+        Scene scene = new Scene(fxmlLoader.load(), 1040, 650);// Creo una nuova scena
+        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();//Prendo lo stage in atto e lo setto
+        stage.setResizable(false); //Non permetto il ridimensionamento della finestra x estetica
         stage.setScene(scene);
     }
     @FXML
-    private void switchToMenu(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AMenu.fxml"));
+    private void switchToFrutta(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AFrutta.fxml")); //Passo alla frutta
         Scene scene = new Scene(fxmlLoader.load(), 1040, 650); // Creo una nuova scena
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); //Prendo lo stage in atto e lo setto
-        stage.setResizable(false); //Non permetto il ridemsionamento della finestra
+        stage.setResizable(false); //Non permetto il ridimensionamento della finestra
         stage.setScene(scene);
     }
     @FXML
     private void switchToVerdura(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AVerdura.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AVerdura.fxml"));//Passo alla verdura
         Scene scene = new Scene(fxmlLoader.load(), 1040, 650); // Creo una nuova scena
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); //Prendo lo stage in atto e lo setto
-        stage.setResizable(false); //Non permetto il ridemsionamento della finestra
+        stage.setResizable(false); //Non permetto il ridimensionamento della finestra x estetica
         stage.setScene(scene);
-        //stage.setMaximized(true); // Imposta la finestra a tutto schermo
     }
     @FXML
     private void switchToVerduraSimple(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AVerduraSimple.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AVerduraSimple.fxml"));//Passo alla verdura ridotta
         Scene scene = new Scene(fxmlLoader.load(), 1040, 650); // Creo una nuova scena
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); //Prendo lo stage in atto e lo setto
-        stage.setResizable(false); //Non permetto il ridemsionamento della finestra
+        stage.setResizable(false); //Non permetto il ridimensionamento della finestra x estetica
         stage.setScene(scene);
-        //stage.setMaximized(true); // Imposta la finestra a tutto schermo
-    }
-    @FXML
-    private void switchToFrutta(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AFrutta.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1040, 650); // Creo una nuova scena
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); //Prendo lo stage in atto e lo setto
-        stage.setResizable(false); //Non permetto il ridemsionamento della finestra
-        stage.setScene(scene);
-        //stage.setMaximized(true); // Imposta la finestra a tutto schermo
     }
     @FXML
     private void switchToPreparati(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("APreparati.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("APreparati.fxml"));//Passo ai preparati
         Scene scene = new Scene(fxmlLoader.load(), 1040, 650); // Creo una nuova scena
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); //Prendo lo stage in atto e lo setto
-        stage.setResizable(false); //Non permetto il ridemsionamento della finestra
+        stage.setResizable(false); //Non permetto il ridimensionamento della finestra x estetica
         stage.setScene(scene);
-        //stage.setMaximized(true); // Imposta la finestra a tutto schermo
+    }
+    @FXML
+    private void switchToMenu(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AMenu.fxml"));//Torno al menu (Si è inutile, ma per standardizzare leggermente lo messo)
+        Scene scene = new Scene(fxmlLoader.load(), 1040, 650); // Creo una nuova scena
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); //Prendo lo stage in atto e lo setto
+        stage.setResizable(false); //Non permetto il ridimensionamento della finestra x estetica
+        stage.setScene(scene);
     }
 }
 

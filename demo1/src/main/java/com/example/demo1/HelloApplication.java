@@ -10,11 +10,12 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("AMenu.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("AMenu.fxml")); //Scena di partenza
         Scene scene = new Scene(fxmlLoader.load(), 1040, 650);
-        stage.setTitle("Frutta e altro");
+        stage.setTitle("Frutta e altro"); //Nome app
         stage.setScene(scene);
-        stage.setResizable(false); //Non permetto il ridemsionamento della finestra
+        //Non permetto il ridemsionamento della finestra solo per questioni puramente estetiche
+        stage.setResizable(false);
         stage.show();
     }
 

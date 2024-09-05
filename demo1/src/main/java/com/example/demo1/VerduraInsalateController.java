@@ -21,6 +21,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class VerduraInsalateController {
+    //Scegli il peso dei vari prodotti in questo caso i pezzi
     @FXML
     private ComboBox<Double> peso1,peso2,peso3,peso4,peso5,peso6,peso7,peso8,peso9,peso10,peso11,peso12,peso13,peso14,peso15,peso16,peso17,peso18,peso19,peso20,peso21,peso22,peso23,peso24,peso25,peso26,peso27,peso28,peso29,peso30,peso31,peso32,peso33,peso34,peso35,peso36,peso37,peso38,peso39,peso40,peso41,peso42,peso43,peso44,peso45,peso46,peso47,peso48,peso49,peso50,peso51,peso52,peso53,peso54,peso55,peso56,peso57,peso58,peso59,peso60,peso63,peso64,peso65,peso66,peso67,peso68;
     @FXML
@@ -31,19 +32,24 @@ public class VerduraInsalateController {
     private Label totalLabel,prezzoCarciofi,prezzoSpinaci,prezzoPeperoni,prezzoSedano,prezzoRape,prezzoRadicchio,prezzoPatate,prezzoCiliegino,prezzoDatterino,prezzoPiccadilly,prezzoPachino,prezzoSanMarzano,prezzoCostoluto,prezzoCuoreDiBue;
     @FXML
     private ToggleGroup carciofi,cavolfiore,peperoni,sedano,rape,melanzane,alchechengi,cicoria,indivia,lattuga,radicchio,cavolo,bietola,zucca,patate,batate,scorzo,ciliegino,datterino;
+    //Immagini che cambiano in base al tipo selezionato
     @FXML
     private ImageView imCarc,imCavol,imPeper,imSedan,imRape,imMelanz,imAlchec,imCicoria,imIndivia,imLattuga,imRadicchio,imCavolo,imBietola,imZucca,imPatate,imBatate,imScorzo,imCiliegino,imDatterino;
     @FXML
-    private  CheckBox c4,c53,c54,c55,c56,c57,c58,c59;
+    private  CheckBox c4,c53,c54,c55,c56,c57,c58,c59; //Cassetta si o no (denominazione è c+numero del peso cioè quello della combobox)
 
-    //Inizializzazione contatori peso
+    //Metodo per aggiornare il carrello a ogni "apertura" della scena e inizializzazione contatori peso
     @FXML
     public void initialize() {
         aggiornaSezCarrello();
+        //Peso normale Kg
         populateComboBox(peso2);populateComboBox(peso3);populateComboBox(peso4);populateComboBox(peso5);populateComboBox(peso6);populateComboBox(peso7);populateComboBox(peso8);populateComboBox(peso9);populateComboBox(peso10);populateComboBox(peso11);populateComboBox(peso12);populateComboBox(peso14);populateComboBox(peso15);populateComboBox(peso16);populateComboBox(peso17);populateComboBox(peso18);populateComboBox(peso19);populateComboBox(peso20);populateComboBox(peso21);
         populateComboBox(peso22);populateComboBox(peso23);populateComboBox(peso24);populateComboBox(peso25);populateComboBox(peso26);populateComboBox(peso27);populateComboBox(peso28);populateComboBox(peso29);populateComboBox(peso30);populateComboBox(peso31);populateComboBox(peso32);populateComboBox(peso33);populateComboBox(peso34);populateComboBox(peso35);populateComboBox(peso36);populateComboBox(peso37);populateComboBox(peso38);populateComboBox(peso39);populateComboBox(peso53);populateComboBox(peso54);populateComboBox(peso55);populateComboBox(peso56);populateComboBox(peso57);populateComboBox(peso58);populateComboBox(peso59);
+        //N° di pezzi
         populateComboBoxPezzi(peso1);populateComboBoxPezzi(peso13);
+        //Solo pesi piccoli
         populateComboBoxPiccolo(peso60);populateComboBoxPiccolo(peso63);populateComboBoxPiccolo(peso64);populateComboBoxPiccolo(peso65);populateComboBoxPiccolo(peso66);populateComboBoxPiccolo(peso67);populateComboBoxPiccolo(peso68);
+        //Solo pesi grandi
         populateComboBoxGrande(peso40);populateComboBoxGrande(peso41);populateComboBoxGrande(peso42);populateComboBoxGrande(peso43);populateComboBoxGrande(peso44);populateComboBoxGrande(peso45);populateComboBoxGrande(peso46);populateComboBoxGrande(peso47);populateComboBoxGrande(peso48);populateComboBoxGrande(peso49);populateComboBoxGrande(peso50);populateComboBoxGrande(peso51);populateComboBoxGrande(peso52);
         // Imposta un unico gestore di eventi per tutte le CheckBox
         c4.setOnAction(event -> sceltaCassetta(c4, peso4, prezzoSpinaci));
@@ -56,40 +62,46 @@ public class VerduraInsalateController {
         c59.setOnAction(event -> sceltaCassetta(c59, peso59, prezzoCuoreDiBue));
     }
 
-    //carrello: Sempre il solito metodo vai avanti grazie
+    //Metodo per aggiornare il carrello
     public void aggiornaSezCarrello() {
-        ShoppingCart cart = ShoppingCart.getInstance(); // Istanza carrello attuale
-        cartListView.getItems().clear(); // Pulisco tutti gli items nella lista a schermo
-        double total = 0.0; // Rifaccio il conto
+        cartListView.getItems().clear(); // Pulisco o meglio dire cancello tutti gli elementi nella ListView
+        double total = 0.0; // Variabile che indica il totale
 
-        ArrayList<String> prodotti = cart.getProdotti();
-        ArrayList<Double> prezzi = cart.getPrezzi();
-        ArrayList<Double> pesi = cart.getPesi();
-        String s;
+        //3 array list per prodotti, prezzi e pesi; ArrayList inizializzati con gli arraylist salvati in ShoppingCart (Vedi il file per il perchè)
+        ArrayList<String> prodotti = ShoppingCart.getInstance().getProdotti(); //Nomi dei prodotti
+        ArrayList<Double> prezzi = ShoppingCart.getInstance().getPrezzi(); //Prezzi dei prodotti
+        ArrayList<Double> pesi = ShoppingCart.getInstance().getPesi(); //Pesi degli articoli
+
+        String s; //Stringa comoda per scrivere il prodotto nella ListView
 
         for (int i = 0; i < prodotti.size(); i++) {
             HBox hbox = new HBox(); // Creiamo un HBox per contenere il testo e il pulsante
 
-            // Creiamo un Label per mostrare le informazioni del prodotto
+            // Creiamo un Label per mostrare le informazioni del prodotto, in base al tipo può essere o in pezzi singoli o in mazzi o in Kg
             if (prodotti.get(i).equalsIgnoreCase("carciofi normali") || prodotti.get(i).equalsIgnoreCase("carciofi romani") || prodotti.get(i).charAt(0) == '▸')
-                s = " pezzi - ";
+                s = " pezzi - "; //Carciofi e prodotti preparati indicati con la > nella posizione 0 della string sono venduti a pezzi
             else if (prodotti.get(i).equalsIgnoreCase("ravanelli"))
-                s=" mazzi - ";
+                s=" mazzi - "; //Solo i ravanelli li vendiamo in mazzi
             else
                 s=" kg - ";
+            //Label per ogni riga della ListView
             Label prodottoLabel = new Label("     "+prodotti.get(i) + " - " + arrotondaAlCent(pesi.get(i)) + s + prezzi.get(i) + " €");
             // Creiamo un pulsante "Rimuovi"
             Button removeButton = new Button("-");
             removeButton.getStyleClass().add("removeButton");
-            int index = i; // Necessario per catturare l'indice corretto per cancellare
+            int index = i; // Necessario per catturare l'indice corretto per cancellare da arraylist
             removeButton.setOnAction(e -> { //All'azione
                 // Rimuoviamo l'elemento dal carrello e aggiorniamo la vista dello "scontrino"
-                cart.removeProduct(index);
-                immDiErrore();
-                aggiornaSezCarrello();
+                ShoppingCart.getInstance().removeProduct(index); //Richiamo il metodo per cancellare passandogli l'indice
+                //Metodo immErr di FruttaController, semplicemente un cambio colore per 2 secondi
+                bottOk.setStyle("-fx-background-color: #E11518;");
+                PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                pause.setOnFinished(event -> bottOk.setStyle("-fx-background-color: #828282;")); //Risistemo il colore
+                pause.play();
+                aggiornaSezCarrello(); //Richiamo il metodo
             });
 
-            // Aggiungiamo il Label e il pulsante all'HBox
+            // Aggiungiamo il Label e il pulsante all'HBox dentro la ListView
             HBox.setHgrow(prodottoLabel, Priority.ALWAYS); // Consente al Label di occupare tutto lo spazio disponibile
             hbox.getChildren().addAll(removeButton,prodottoLabel);
             cartListView.getItems().add(hbox);
@@ -97,64 +109,73 @@ public class VerduraInsalateController {
             total += prezzi.get(i); //Aggiorno il totale
         }
 
-        total = arrotondaAlCent(total);
-        totalLabel.setText(total + " €");
+        total = arrotondaAlCent(total); //Arrotondo la cifra alla seconda dopo la virgola
+        totalLabel.setText(total + " €"); //Aggiorno la label con il totale
     }
-    //Metodo per allestimenti, se così si può dire dei comboBox, si può usare adAll
-
     //Classe per arrotondare usando BigDecimal
     public static double arrotondaAlCent(double value) {
-        BigDecimal bd = new BigDecimal(value);
+        BigDecimal bd = new BigDecimal(value); //bd è il nostro numero
         bd = bd.setScale(2, RoundingMode.HALF_UP); // Arrotonda a 2 decimali
-        return bd.doubleValue();
+        return bd.doubleValue(); //Lo restituisco in double per comodità
     }
 
     //Metodi per utilizzi secondari
     @FXML
-    private void immDiConferma () {
-        aggiornaSezCarrello(); //Lo metto qua perchè non ho voglia di inserirlo in tutti i metodi peso ¬_¬
-        bottOk.setStyle("-fx-background-color: #76DD4D;");
+    private void immDiConferma () { //Metodo che conferma l'aggiunta dei prodottti
+        aggiornaSezCarrello(); //Lo metto qua perchè non ho voglia di inserirlo in tutti i metodi peso ¬_¬, anche per risparmiare linee di codice
+        bottOk.setStyle("-fx-background-color: #76DD4D;"); //Verde
         // Crea una pausa di 2 secondi prima di ritornare a vecchio colore
-        PauseTransition pause = new PauseTransition(Duration.seconds(2));
-        pause.setOnFinished(event -> bottOk.setStyle("-fx-background-color: #828282;")); //Risistemo il testo
+        PauseTransition pause = new PauseTransition(Duration.seconds(2)); //Grigino
+        pause.setOnFinished(event -> bottOk.setStyle("-fx-background-color: #828282;")); //Risistemo il colore
         pause.play();
     }
-    private void immDiErrore () {
-        bottOk.setStyle("-fx-background-color: #E11518;");
-        // Crea una pausa di 2 secondi prima di ritornare a vecchio colore
-        PauseTransition pause = new PauseTransition(Duration.seconds(2));
-        pause.setOnFinished(event -> bottOk.setStyle("-fx-background-color: #828282;")); //Risistemo il testo
-        pause.play();
-    }
-    //Metodi aggiunta prodotti ####VERDURE####
     @FXML
-    public void aggAsparagi(){
-        aggiungiRiga("Asparagi",2.99*0.2,0.2); // aggiungiamo allo scontrino
-        immDiConferma(); //diamo un input visivo di ciò
+    private void immDiErrore () {
+        bottOk.setStyle("-fx-background-color: #E11518;"); //Rossastro
+        // Crea una pausa di 2 secondi prima di ritornare a vecchio colore
+        PauseTransition pause = new PauseTransition(Duration.seconds(2)); //Grigino
+        pause.setOnFinished(event -> bottOk.setStyle("-fx-background-color: #828282;")); //Risistemo il colore
+        pause.play();
+    }
+
+    //Metodi aggiunta verdure
+    //Nb: Quando i metodi sono tutti simili non commento
+    @FXML //Metodo unico per l'aggiunta
+    public void aggiuntaProdotto(String prodotto,double prezzoAlKg,ComboBox<Double> combo){
+        if (combo.getValue() == null)
+            immDiErrore(); //Se il peso è nullo non procedo e mostro un errore visivo
+        else{
+            double peso=Double.parseDouble(String.valueOf(combo.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
+            aggiungiProdotto(prodotto,arrotondaAlCent(prezzoAlKg*peso),peso); // aggiungiamo allo scontrino
+            immDiConferma(); //diamo un ingresso visivo di ciò
+        }
+    }
+    @FXML
+    public void aggAsparagi(){//Prodotto con peso fisso
+        aggiungiProdotto("Asparagi",2.99*0.2,0.2); // aggiungiamo allo scontrino
+        immDiConferma(); //diamo un ingresso visivo di ciò
     }
     @FXML
     public void aggCarciofi(){
         // Ottieni il RadioButton selezionato
-        RadioButton carciofiSelectedToggle = (RadioButton) carciofi.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso1.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) carciofi.getSelectedToggle();
+        if (peso1.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso1.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            double mon;
+            String selectedText = radioSelezionato.getText();
+            double mon;//Prezzo Variabile
             if (selectedText.equalsIgnoreCase("normali"))
                 mon=0.99;
             else
                 mon=1.29;
-            aggiungiRiga("Carciofi "+selectedText,mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto("Carciofi "+selectedText,mon,peso1);
         }
     }
     //Metodo per il cambio immagine quando si seleziona il relativo radiobutton
     @FXML
     public void radCarciofi(){
-        RadioButton carciofiSelectedToggle = (RadioButton) carciofi.getSelectedToggle();
-        String selectedText = carciofiSelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) carciofi.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("normali")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/galafruit_carciofi-300x300.jpg").toExternalForm());
             imCarc.setImage(newImage);
@@ -163,40 +184,32 @@ public class VerduraInsalateController {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/carciofo_romano.jpg").toExternalForm());
             imCarc.setImage(newImage);
         }
-        double mon;
+        double mon; //Prezzo variabile
         if (selectedText.equalsIgnoreCase("normali"))
             mon=0.99;
         else
             mon=1.29;
-        prezzoCarciofi.setText(mon+"€/Pz");
+        prezzoCarciofi.setText(mon+"€/Pz"); //Cambio il prezzo visibile
     }
     @FXML
     public void aggCarote(){
-        if (peso2.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso2.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Carote",1.99*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Carote",1.99,peso2);
     }
     @FXML
     public void aggCavolfiore(){
-        RadioButton carciofiSelectedToggle = (RadioButton) cavolfiore.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
+        RadioButton carciofiSelectedToggle = (RadioButton) cavolfiore.getSelectedToggle();
         if (peso3.getValue() == null || carciofiSelectedToggle == null)
             immDiErrore();
         else{
             String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso3.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Cavolfiore "+selectedText,2.89*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto("Cavolfiore "+selectedText,2.89,peso3);
         }
     }
     //Metodo per il cambio immagine quando si seleziona il relativo radiobutton
     @FXML
     public void radCavolfiori(){
-        RadioButton SelectedToggle = (RadioButton) cavolfiore.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) cavolfiore.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("bianco")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/cavolfiore.jpg").toExternalForm());
             imCavol.setImage(newImage);
@@ -217,9 +230,9 @@ public class VerduraInsalateController {
         if (peso4.getValue() == null)
             immDiErrore();
         else{
-            String s;
-            double mon;
-            if (c4.isSelected()) {
+            String s;//Stringa per scontrino
+            double mon;//Prezzo variabile
+            if (c4.isSelected()) { //Se cassetta selezionata cambia anche il prezzo conviene
                 s = "Cassetta";
                 mon=2.79;
             }
@@ -227,43 +240,33 @@ public class VerduraInsalateController {
                 s = "";
                 mon=3.90;
             }
-            double peso=Double.parseDouble(String.valueOf(peso4.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga(s+" Spinaci",mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto(s+" Spinaci",mon,peso4);
         }
     }
     @FXML
     public void aggZucchine(){
-        if (peso5.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso5.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Zucchine",1.99*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Zucchine",1.99,peso5);
     }
     @FXML
     public void aggPeperoni(){
-        RadioButton carciofiSelectedToggle = (RadioButton) peperoni.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso6.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) peperoni.getSelectedToggle();
+        if (peso6.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso6.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
+            String selectedText = radioSelezionato.getText();
             double mon;
             if (selectedText.equalsIgnoreCase("dolci"))
                 mon=3.98;
             else
                 mon=2.99;
-            aggiungiRiga("Peperoni "+selectedText,mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto("Peperoni "+selectedText,mon,peso6);
         }
     }
     //Metodo per il cambio immagine quando si seleziona il relativo radiobutton
     @FXML
     public void radPeperoni(){
-        RadioButton SelectedToggle = (RadioButton) peperoni.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) peperoni.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("rossi")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/peperone_rosso.jpg").toExternalForm());
             imPeper.setImage(newImage);
@@ -287,35 +290,27 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggCavoletti(){
-        if (peso7.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso7.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Cavoletti di Bruxelles",3.39*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Cavoletti di Bruxelles",3.39,peso7);
     }
     @FXML
     public void aggSedano(){
-        RadioButton carciofiSelectedToggle = (RadioButton) sedano.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso8.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) sedano.getSelectedToggle();
+        if (peso8.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso8.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
+            String selectedText = radioSelezionato.getText();
             double mon;
             if (selectedText.equalsIgnoreCase("rapa"))
                 mon=2.50;
             else
                 mon=2.39;
-            aggiungiRiga("Sedano "+selectedText,mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto("Sedano "+selectedText,mon,peso8);
         }
     }
     @FXML
     public void radSedano(){
-        RadioButton SelectedToggle = (RadioButton) sedano.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) sedano.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("bianco")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/sedano_bianco.jpg").toExternalForm());
             imSedan.setImage(newImage);
@@ -336,35 +331,27 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggFagiolini(){
-        if (peso9.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso9.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Fagiolini",2.99*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Fagiolini",2.99,peso9);
     }
     @FXML
     public void aggRape(){
-        RadioButton carciofiSelectedToggle = (RadioButton) rape.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso10.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) rape.getSelectedToggle();
+        if (peso10.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso10.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
+            String selectedText = radioSelezionato.getText();
             double mon;
             if (selectedText.equalsIgnoreCase("bianca"))
                 mon=3.5;
             else
                 mon=4.5;
-            aggiungiRiga("Rape "+selectedText,mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto("Rape "+selectedText,mon,peso10);
         }
     }
     @FXML
     public void radRape(){
-        RadioButton SelectedToggle = (RadioButton) rape.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) rape.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("bianca")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/rape_bianche.jpg").toExternalForm());
             imRape.setImage(newImage);
@@ -382,50 +369,30 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggBarbabietole(){
-        if (peso11.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso11.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Barbabietole",4.29*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Barbabietole",4.29,peso11);
     }
     @FXML
     public void aggFinocchio(){
-        if (peso12.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso12.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Finocchio",3.29*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Finocchio",3.29,peso12);
     }
     @FXML
     public void aggRavanelli(){
-        if (peso13.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso13.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Ravanelli",1.40*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Ravanelli",1.40,peso13);
     }
     @FXML
     public void aggMelanzane(){
-        RadioButton carciofiSelectedToggle = (RadioButton) melanzane.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso14.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) melanzane.getSelectedToggle();
+        if (peso14.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso14.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Melanzane "+selectedText,1.29*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            String selectedText = radioSelezionato.getText();
+            aggiuntaProdotto("Melanzane "+selectedText,1.29,peso14);
         }
     }
     @FXML
     public void radMelanzane(){
-        RadioButton SelectedToggle = (RadioButton) melanzane.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) melanzane.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("viola")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/melanzane_viola.jpg").toExternalForm());
             imMelanz.setImage(newImage);
@@ -437,32 +404,20 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggBroccolini(){
-        if (peso15.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso15.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Broccolini",4.50*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Broccolini",4.50,peso15);
     }
     @FXML
     public void aggBroccoli(){
-        if (peso16.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso16.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Broccoli",3.99*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Broccoli",3.99,peso16);
     }
     @FXML
     public void aggAlchechengi(){
-        if (peso17.getValue() == null)
+        RadioButton radioSelezionato = (RadioButton) alchechengi.getSelectedToggle();
+        if (peso17.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            double peso=Double.parseDouble(String.valueOf(peso17.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Alchechengi",9.99*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            String selectedText = radioSelezionato.getText();
+            aggiuntaProdotto("Alchechengi "+selectedText,9.99,peso17);
         }
     }
     @FXML
@@ -480,63 +435,37 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggAlche(){
-        if (peso18.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso18.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Alghe",66.37*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Alghe",66.37,peso18);
     }
     @FXML
     public void aggCavoloRapa(){
-        if (peso19.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso19.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Cavolo-rapa",3.50*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Cavolo-Rapa",3.50,peso19);
     }
 
     //A foglie
     @FXML
     public void aggAgretti(){
-        if (peso20.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso20.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Agretti ",7.98*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Agretti",7.98,peso20);
     }
     @FXML
     public void aggCrescione(){
-        if (peso21.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso21.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Crescione ",9.00*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Crescione",9.00,peso21);
     }
     @FXML
     public void aggCicoria(){
-        RadioButton carciofiSelectedToggle = (RadioButton) cicoria.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso22.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) cicoria.getSelectedToggle();
+        if (peso22.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso22.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Cicoria "+selectedText,3.90*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            String selectedText = radioSelezionato.getText();
+            aggiuntaProdotto("Cicoria"+selectedText,3.90,peso22);
         }
     }
     //Metodo per il cambio immagine quando si seleziona il relativo radiobutton
     @FXML
     public void radCicoria(){
-        RadioButton SelectedToggle = (RadioButton) cicoria.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) cicoria.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("catalogna")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/insalate/cicoria_catalogna.jpg").toExternalForm());
             imCicoria.setImage(newImage);
@@ -548,41 +477,27 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggIceberg(){
-        if (peso23.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso23.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Iceberg ",2.90*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Iceberg",2.90,peso23);
     }
     @FXML
     public void aggRiccia(){
-        if (peso24.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso24.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Riccia ",2.90*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Riccia ",2.90,peso24);
     }
     @FXML
     public void aggIndivia(){
-        RadioButton carciofiSelectedToggle = (RadioButton) indivia.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso25.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) indivia.getSelectedToggle();
+        if (peso25.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso25.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Indivia "+selectedText,2.90*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            String selectedText = radioSelezionato.getText();
+            aggiuntaProdotto("Indivia "+selectedText,2.90,peso25);
         }
     }
     //Metodo per il cambio immagine quando si seleziona il relativo radiobutton
     @FXML
     public void radIndivia(){
-        RadioButton SelectedToggle = (RadioButton) indivia.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) indivia.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("Belga")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/insalate/indivia_belga.jpg").toExternalForm());
             imIndivia.setImage(newImage);
@@ -593,21 +508,19 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggLattuga(){
-        RadioButton carciofiSelectedToggle = (RadioButton) lattuga.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso26.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) lattuga.getSelectedToggle();
+        if (peso26.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso26.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Lattuga "+selectedText,2.90*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            String selectedText = radioSelezionato.getText();
+            aggiuntaProdotto("Lattuga "+selectedText,2.90,peso25);
         }
     }
     //Metodo per il cambio immagine quando si seleziona il relativo radiobutton
     @FXML
     public void radLattuga(){
-        RadioButton SelectedToggle = (RadioButton) lattuga.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) lattuga.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("gentile")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/insalate/lattuga_gentile.jpg").toExternalForm());
             imLattuga.setImage(newImage);
@@ -630,36 +543,28 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggPortulaca(){
-        if (peso27.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso27.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Portulaca ",8.30*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Portulaca ",8.30,peso27);
     }
     @FXML
     public void aggRadicchio(){
-        RadioButton carciofiSelectedToggle = (RadioButton) radicchio.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso28.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) radicchio.getSelectedToggle();
+        if (peso28.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso28.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
+            String selectedText = radioSelezionato.getText();
             double mon;
             if (selectedText.equalsIgnoreCase("Di treviso") || selectedText.equalsIgnoreCase("di chioggia igp"))
                 mon=2.40;
             else
                 mon=5.90;
-            aggiungiRiga("Radicchio "+selectedText,mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto("Radicchio "+selectedText,mon,peso28);
         }
     }
     //Metodo per il cambio immagine quando si seleziona il relativo radiobutton
     @FXML
     public void radRadicchio(){
-        RadioButton SelectedToggle = (RadioButton) radicchio.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) radicchio.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("Di treviso")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/insalate/radicchio_treviso.jpg").toExternalForm());
             imRadicchio.setImage(newImage);
@@ -683,61 +588,35 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggRucola(){
-        if (peso29.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso29.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Rucola ",1.70*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Rucola",1.70,peso29);
     }
     @FXML
     public void aggScarola(){
-        if (peso30.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso30.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Scarola ",1.80*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Scarola",1.80,peso30);
     }
     @FXML
     public void aggSpinaciDaInsalata(){
-        if (peso31.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso31.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Spinaci da Insalata ",2.80*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Spinaci da Insalata ",2.80,peso31);
     }
     @FXML
     public void aggValeriana(){
-        if (peso32.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso32.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Valeriana ",2.90*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Valeriana",2.90,peso32);
     }
     @FXML
     public void aggCavolo(){
-        RadioButton carciofiSelectedToggle = (RadioButton) cavolo.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso33.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) cavolo.getSelectedToggle();
+        if (peso33.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso33.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Cavolo "+selectedText,2.90*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            String selectedText = radioSelezionato.getText();
+            aggiuntaProdotto("Cavolo "+selectedText,2.90,peso33);
         }
     }
     //Metodo per il cambio immagine quando si seleziona il relativo radiobutton
     @FXML
     public void radCavolo(){
-        RadioButton SelectedToggle = (RadioButton) cavolo.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) cavolo.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("nero")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/insalate/cavolo_nero.jpg").toExternalForm());
             imCavolo.setImage(newImage);
@@ -755,41 +634,27 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggVerza(){
-        if (peso34.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso34.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Verza ",1.90*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Verza ",1.90,peso34);
     }
     @FXML
     public void aggCardo(){
-        if (peso35.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso35.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Cardo ",3.90*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Cardo ",3.90,peso35);
     }
     @FXML
     public void aggBietola(){
-        RadioButton carciofiSelectedToggle = (RadioButton) bietola.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso36.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) bietola.getSelectedToggle();
+        if (peso36.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso36.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Bietola "+selectedText,4.50*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            String selectedText = radioSelezionato.getText();
+            aggiuntaProdotto("Bietola "+selectedText,4.50,peso36);
         }
     }
     //Metodo per il cambio immagine quando si seleziona il relativo radiobutton
     @FXML
     public void radBietola(){
-        RadioButton SelectedToggle = (RadioButton) bietola.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) bietola.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("bianca")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/insalate/bietola_bianca.jpg").toExternalForm());
             imBietola.setImage(newImage);
@@ -804,53 +669,32 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggCoste(){
-        if (peso37.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso37.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Coste bianche ",2.50*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Coste bianche ",2.50,peso37);
     }
     @FXML
     public void aggCime(){
-        if (peso38.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso38.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Cime di rapa ",2.50*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Cime di rapa ",2.50,peso38);
     }
     @FXML
     public void aggFriarielli(){
-        if (peso39.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso39.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Friarielli ",3.00*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Friarielli ",3.00,peso39);
     }
-
 
     //Tuberi
     @FXML
     public void aggZucca(){
-        RadioButton carciofiSelectedToggle = (RadioButton) zucca.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso40.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) zucca.getSelectedToggle();
+        if (peso40.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso40.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Zucca "+selectedText,2.46*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            String selectedText = radioSelezionato.getText();
+            aggiuntaProdotto("Zucca "+selectedText,2.46,peso40);
         }
     }
     @FXML
     public void radZucca(){
-        RadioButton SelectedToggle = (RadioButton) zucca.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) zucca.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("atlantic")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/tuberi/zucca_atlantic.jpg").toExternalForm());
             imZucca.setImage(newImage);
@@ -867,25 +711,23 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggPatate(){
-        RadioButton carciofiSelectedToggle = (RadioButton) patate.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso41.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) patate.getSelectedToggle();
+        if (peso41.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso41.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
+            String selectedText = radioSelezionato.getText();
             double mon;
             if (selectedText.equalsIgnoreCase("normali"))
                 mon=1.20;
             else
                 mon=2.90;
-            aggiungiRiga("Patate "+selectedText,mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto("Patate "+selectedText,mon,peso41);
         }
     }
     @FXML
     public void radPatate(){
-        RadioButton SelectedToggle = (RadioButton) patate.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) patate.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("normali")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/tuberi/patate_normali.jpg").toExternalForm());
             imPatate.setImage(newImage);
@@ -902,20 +744,18 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggBatate(){
-        RadioButton carciofiSelectedToggle = (RadioButton) batate.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso42.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) batate.getSelectedToggle();
+        if (peso42.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso42.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Batate "+selectedText,3.90*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            String selectedText = radioSelezionato.getText();
+            aggiuntaProdotto("Batate "+selectedText,3.90,peso42);
         }
     }
     @FXML
     public void radBatate(){
-        RadioButton SelectedToggle = (RadioButton) batate.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) batate.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("rosse")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/tuberi/batate_rosse.jpg").toExternalForm());
             imBatate.setImage(newImage);
@@ -926,20 +766,18 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggScorzo(){
-        RadioButton carciofiSelectedToggle = (RadioButton) scorzo.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso43.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) scorzo.getSelectedToggle();
+        if (peso43.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso43.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Scorzo"+selectedText,8.90*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            String selectedText = radioSelezionato.getText();
+            aggiuntaProdotto("Scorzo"+selectedText,8.90,peso43);
         }
     }
     @FXML
     public void radScorzo(){
-        RadioButton SelectedToggle = (RadioButton) scorzo.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) scorzo.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("nera")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/tuberi/scorzo_nera.jpg").toExternalForm());
             imScorzo.setImage(newImage);
@@ -950,100 +788,47 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggTopinambur(){
-        if (peso44.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso44.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Topinambur ",8.90*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Topinambur ",8.90,peso44);
     }
+
     //Cipolle
     @FXML
     public void aggCipolleBianche(){
-        if (peso45.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso45.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Cipolle bianche ",2.5*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Cipolle bianche ",2.5,peso45);
     }
     @FXML
     public void aggCipolleRosse(){
-        if (peso46.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso46.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Cipolle rosse ",2.9*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Cipolle rosse ",2.9,peso46);
     }
     @FXML
     public void aggCipolleTropea(){
-        if (peso47.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso47.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Cipolle di tropea ",3.0*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Cipolle di tropea ",3.0,peso47);
     }
     @FXML
     public void aggPorri(){
-        if (peso48.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso48.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Porri ",2.5*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Porri ",2.5,peso48);
     }
     @FXML
     public void aggCipollottiBianchi(){
-        if (peso49.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso49.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Cipollotti bianchi ",2.5*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Cipollotti bianchi ",2.5,peso49);
     }
     @FXML
     public void aggCipollottiRossi(){
-        if (peso50.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso50.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Cipollotti rossi ",2.5*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Cipollotti rossi ",2.5,peso50);
     }
     @FXML
     public void aggCipolline(){
-        if (peso51.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso51.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Cipolline ",3.2*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Cipolline ",3.2,peso51);
     }
     @FXML
     public void aggAglio(){
-        if (peso52.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso52.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Aglio ",2.9*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Aglio ",2.9,peso52);
     }
     //Pomodori
     @FXML
     public void aggCiliegino(){
-        RadioButton carciofiSelectedToggle = (RadioButton) ciliegino.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso53.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) ciliegino.getSelectedToggle();
+        if (peso53.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
             String s;
@@ -1056,17 +841,15 @@ public class VerduraInsalateController {
                 s = "";
                 mon=2.99;
             }
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso53.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga(s+" Ciliegino "+selectedText,mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            String selectedText = radioSelezionato.getText();
+            aggiuntaProdotto(s+" Ciliegino "+selectedText,mon,peso53);
         }
     }
     //Metodo per il cambio immagine quando si seleziona il relativo radiobutton
     @FXML
     public void radCiliegino(){
-        RadioButton SelectedToggle = (RadioButton) ciliegino.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) ciliegino.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("rosso")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/pomodori/ciliegino_rosso.jpg").toExternalForm());
             imCiliegino.setImage(newImage);
@@ -1081,8 +864,8 @@ public class VerduraInsalateController {
     }
     @FXML
     public void aggDatterino(){
-        RadioButton carciofiSelectedToggle = (RadioButton) datterino.getSelectedToggle(); //Il nome me lo ha dato lui in auto io lo avrei chiamato erCarciofone
-        if (peso54.getValue() == null || carciofiSelectedToggle == null)
+        RadioButton radioSelezionato = (RadioButton) datterino.getSelectedToggle();
+        if (peso54.getValue() == null || radioSelezionato == null)
             immDiErrore();
         else{
             String s;
@@ -1095,17 +878,15 @@ public class VerduraInsalateController {
                 s = "";
                 mon=2.99;
             }
-            String selectedText = carciofiSelectedToggle.getText();
-            double peso=Double.parseDouble(String.valueOf(peso54.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga(s+" Datterino "+selectedText,mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            String selectedText = radioSelezionato.getText();
+            aggiuntaProdotto(s+" Datterino "+selectedText,mon,peso54);
         }
     }
     //Metodo per il cambio immagine quando si seleziona il relativo radiobutton
     @FXML
     public void radDatterino(){
-        RadioButton SelectedToggle = (RadioButton) datterino.getSelectedToggle();
-        String selectedText = SelectedToggle.getText();
+        RadioButton radioSelezionato = (RadioButton) datterino.getSelectedToggle();
+        String selectedText = radioSelezionato.getText();
         if (selectedText.equalsIgnoreCase("rosso")) {
             Image newImage = new Image(getClass().getResource("/com/example/demo1/img/verdura/pomodori/datterino_rosso.jpg").toExternalForm());
             imDatterino.setImage(newImage);
@@ -1133,9 +914,7 @@ public class VerduraInsalateController {
                 s = "";
                 mon=2.99;
             }
-            double peso=Double.parseDouble(String.valueOf(peso55.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga(s+" Piccadilly ",mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto(s+" Picadilly ",mon,peso55);
         }
     }
     @FXML
@@ -1153,9 +932,7 @@ public class VerduraInsalateController {
                 s = "";
                 mon=2.99;
             }
-            double peso=Double.parseDouble(String.valueOf(peso56.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga(s+" Pachino ",mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto(s+" Pachino ",mon,peso56);
         }
     }
     @FXML
@@ -1173,9 +950,7 @@ public class VerduraInsalateController {
                 s = "";
                 mon=2.99;
             }
-            double peso=Double.parseDouble(String.valueOf(peso57.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga(s+" San Marzano ",mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto(s+" San Marzano ",mon,peso57);
         }
     }
     @FXML
@@ -1193,9 +968,7 @@ public class VerduraInsalateController {
                 s = "";
                 mon=1.99;
             }
-            double peso=Double.parseDouble(String.valueOf(peso58.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga(s+" Costoluto ",mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto(s+" Costoluto ",mon,peso58);
         }
     }
     @FXML
@@ -1213,99 +986,56 @@ public class VerduraInsalateController {
                 s = "";
                 mon=1.99;
             }
-            double peso=Double.parseDouble(String.valueOf(peso59.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga(s+" Cuore di Bue ",mon*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
+            aggiuntaProdotto(s+" Cuore di Bue ",mon,peso59);
         }
     }
     @FXML
     public void aggLimoni(){
-        if (peso60.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso60.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Limoni",2.19*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Limoni",2.19,peso60);
     }
     @FXML
     public void aggLime(){
         //Conversione del valore contenuto nella combobox da stringa a double
-        aggiungiRiga("Lime",1.2*0.2,0.2); // aggiungiamo allo scontrino
+        aggiungiProdotto("Lime",1.2*0.2,0.2); // aggiungiamo allo scontrino
         immDiConferma(); //diamo un input visivo di ciò
     }
     @FXML
     public void aggPeperoncino(){
         //Conversione del valore contenuto nella combobox da stringa a double
-        aggiungiRiga("Peperoncini",1.2*0.1,0.1); // aggiungiamo allo scontrino
+        aggiungiProdotto("Peperoncini",1.2*0.1,0.1); // aggiungiamo allo scontrino
         immDiConferma(); //diamo un input visivo di ciò
     }
     @FXML
     public void aggZenzero(){
-        if (peso63.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso63.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Zenzero",4.4*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Zenzero",4.40,peso63);
     }
     @FXML
     public void aggBasilico(){
-        if (peso64.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso64.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Basilico",8.9*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Basilico",8.9,peso64);
     }
     @FXML
     public void aggRosmarino(){
-        if (peso65.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso65.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Rosmarino",6.9*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Rosmarino",6.9,peso65);
     }
     @FXML
     public void aggSalvia(){
-        if (peso66.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso66.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Salvia",6.9*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Salvia",6.9,peso66);
     }
     @FXML
     public void aggTimo(){
-        if (peso67.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso67.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Timo",6.9*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Timo",6.9,peso67);
     }
     @FXML
     public void aggMenta(){
-        if (peso68.getValue() == null)
-            immDiErrore();
-        else{
-            double peso=Double.parseDouble(String.valueOf(peso68.getValue())); //Conversione del valore contenuto nella combobox da stringa a double
-            aggiungiRiga("Menta",6.9*peso,peso); // aggiungiamo allo scontrino
-            immDiConferma(); //diamo un input visivo di ciò
-        }
+        aggiuntaProdotto("Menta",6.9,peso68);
     }
 
     // Metodo per aggiungere una riga
-    public void aggiungiRiga(String prodotto, double prezzo, double peso) {
+    public void aggiungiProdotto(String prodotto, double prezzo, double peso) {
         ShoppingCart.getInstance().addProduct(prodotto, prezzo, peso);
     }
 
+    //ComboBox
     //Metodo per allestimenti, se così si può dire dei comboBox, si può usare adAll
     private void populateComboBox(ComboBox<Double> peso) {
         for (double i = 5.00; i >= 0.10; i -= 0.05) {
@@ -1331,77 +1061,68 @@ public class VerduraInsalateController {
     //Metodo per cassette
     private void sceltaCassetta(CheckBox checkBox, ComboBox<Double> comboBox, Label labPrezzi) {
         if (checkBox.isSelected()) {
-            // Cancella i valori esistenti e aggiungi nuovi valori
-            comboBox.getItems().clear();
-            comboBox.getItems().addAll(1.0,2.0,3.0);
-            System.out.println(labPrezzi.getText());
-            //Cambio prezzi
-            double val=Double.parseDouble(labPrezzi.getText().substring(0, 3));
-            val-=1.0;
-            arrotondaAlCent(val);
-            labPrezzi.setText(val+"€/Kg");
-        } else {
-            comboBox.getItems().clear();
-            populateComboBox(comboBox);
-            //Cambio prezzi
-            double val=Double.parseDouble(labPrezzi.getText().substring(0, 3));
-            val+=1.0;
-            arrotondaAlCent(val);
-            labPrezzi.setText(val+"€/Kg");
+            // Cancella i valori esistenti e aggiungi nuovi valori nella checkbox
+            comboBox.getItems().clear(); //Pulisco la combobox
+            comboBox.getItems().addAll(1.0,2.0,3.0); //1,2,3 Kg
+            double val=Double.parseDouble(labPrezzi.getText().substring(0, 3))-1.0;//Da stringa lo passo a double e cambio il prezzo ad uno più vantaggioso, per politiche aziendali esso viene diminuito di 1€
+            arrotondaAlCent(val); //Arrotondiamo sempre per sicurezza
+            labPrezzi.setText(val+"€/Kg"); //Modifichiamo la label per i prezzi
+        } else { //Rimetto il prezzo senza cassetta
+            comboBox.getItems().clear(); //Pulisco la combobox
+            populateComboBox(comboBox); //Richiamo il metodo originale per il popolamento del menu a tendina
+            double val=Double.parseDouble(labPrezzi.getText().substring(0, 3))+1.0; //Cambio prezzi
+            arrotondaAlCent(val); //Arrotondo per sicurezza
+            labPrezzi.setText(val+"€/Kg"); //Modifico la label
         }
     }
 
-    //Scambi tra le schermate
+    //Scambi tra le scene
     @FXML
     private void switchToProductsView (MouseEvent mouseEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AProdotti.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1040, 650);
-        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-        stage.setResizable(false); //Non permetto il ridemsionamento della finestra
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AProdotti.fxml")); //All'evento del mouse, click, passo alla schermata che mostra la divisione intermedia dei prodotti
+        Scene scene = new Scene(fxmlLoader.load(), 1040, 650);// Creo una nuova scena
+        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();//Prendo lo stage in atto e lo setto
+        stage.setResizable(false); //Non permetto il ridimensionamento della finestra per estetica
         stage.setScene(scene);
     }
     @FXML
     private void switchToCart (MouseEvent mouseEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ACart.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1040, 650);
-        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-        stage.setResizable(false); //Non permetto il ridemsionamento della finestra
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ACart.fxml")); //Passo al carrello
+        Scene scene = new Scene(fxmlLoader.load(), 1040, 650);// Creo una nuova scena
+        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();//Prendo lo stage in atto e lo setto
+        stage.setResizable(false); //Non permetto il ridimensionamento della finestra x estetica
         stage.setScene(scene);
     }
     @FXML
-    private void switchToMenu(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AMenu.fxml"));
+    private void switchToFrutta(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AFrutta.fxml")); //Passo alla frutta
         Scene scene = new Scene(fxmlLoader.load(), 1040, 650); // Creo una nuova scena
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); //Prendo lo stage in atto e lo setto
-        stage.setResizable(false); //Non permetto il ridemsionamento della finestra
+        stage.setResizable(false); //Non permetto il ridimensionamento della finestra
         stage.setScene(scene);
     }
     @FXML
     private void switchToVerdura(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AVerdura.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AVerdura.fxml"));//Passo alla verdura
         Scene scene = new Scene(fxmlLoader.load(), 1040, 650); // Creo una nuova scena
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); //Prendo lo stage in atto e lo setto
-        stage.setResizable(false); //Non permetto il ridemsionamento della finestra
+        stage.setResizable(false); //Non permetto il ridimensionamento della finestra x estetica
         stage.setScene(scene);
-        //stage.setMaximized(true); // Imposta la finestra a tutto schermo
-    }
-    @FXML
-    private void switchToFrutta(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AFrutta.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1040, 650); // Creo una nuova scena
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); //Prendo lo stage in atto e lo setto
-        stage.setResizable(false); //Non permetto il ridemsionamento della finestra
-        stage.setScene(scene);
-        //stage.setMaximized(true); // Imposta la finestra a tutto schermo
     }
     @FXML
     private void switchToPreparati(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("APreparati.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("APreparati.fxml"));//Passo ai preparati
         Scene scene = new Scene(fxmlLoader.load(), 1040, 650); // Creo una nuova scena
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); //Prendo lo stage in atto e lo setto
-        stage.setResizable(false); //Non permetto il ridemsionamento della finestra
+        stage.setResizable(false); //Non permetto il ridimensionamento della finestra x estetica
         stage.setScene(scene);
-        //stage.setMaximized(true); // Imposta la finestra a tutto schermo
+    }
+    @FXML
+    private void switchToMenu(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AMenu.fxml"));//Torno al menu (Si è inutile, ma per standardizzare leggermente lo messo)
+        Scene scene = new Scene(fxmlLoader.load(), 1040, 650); // Creo una nuova scena
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); //Prendo lo stage in atto e lo setto
+        stage.setResizable(false); //Non permetto il ridimensionamento della finestra x estetica
+        stage.setScene(scene);
     }
 }
-
