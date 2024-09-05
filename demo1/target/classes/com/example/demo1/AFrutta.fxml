@@ -32,7 +32,7 @@
                                 <Insets left="30.0" right="30.0" />
                             </VBox.margin>
                             <children>
-                                <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" styleClass="search-button" stylesheets="@style/style.css" text="Frutta" textFill="WHITE" />
+                                <Button mnemonicParsing="false" onMouseClicked="#switchToFrutta" prefHeight="40.0" prefWidth="80.0" styleClass="search-button" stylesheets="@style/style.css" text="Frutta" textFill="WHITE" />
                                 <Pane prefHeight="70.0" prefWidth="10.0" />
                                 <Button mnemonicParsing="false" onAction="#switchToVerduraSimple" prefHeight="40.0" prefWidth="80.0" styleClass="search-button" stylesheets="@style/style.css" text="Verdura" textFill="WHITE" />
                                 <Pane prefHeight="70.0" prefWidth="10.0" />

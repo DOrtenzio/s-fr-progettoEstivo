@@ -81,7 +81,7 @@
                                         <Separator prefHeight="0.0" prefWidth="118.0" />
                                     </children>
                                 </HBox>
-                                <Button fx:id="bottOk" mnemonicParsing="false" onMouseClicked="#switchToCartView" prefHeight="50.0" prefWidth="270.0" styleClass="search-button" stylesheets="@style/style.css" text="VAI AL CARRELLO" textFill="WHITE">
+                                <Button fx:id="bottOk" mnemonicParsing="false" onMouseClicked="#switchToCart" prefHeight="50.0" prefWidth="270.0" styleClass="search-button" stylesheets="@style/style.css" text="VAI AL CARRELLO" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets bottom="20.0" top="30.0" />
                                     </VBox.margin>

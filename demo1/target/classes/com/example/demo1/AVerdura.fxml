@@ -36,7 +36,7 @@
                                 <Pane prefHeight="70.0" prefWidth="10.0" />
                                 <Button mnemonicParsing="false" onAction="#switchToVerdura" prefHeight="40.0" prefWidth="80.0" styleClass="search-button" stylesheets="@style/style.css" text="Verdura" textFill="WHITE" />
                                 <Pane prefHeight="70.0" prefWidth="10.0" />
-                                <Button mnemonicParsing="false" onAction="#switchToPreparati" prefHeight="40.0" prefWidth="80.0" styleClass="search-button" stylesheets="@style/style.css" text="Preparati" textFill="WHITE" />
+                                <Button mnemonicParsing="false" onAction="#switchToPreparati" onMouseClicked="#switchToPreparati" prefHeight="40.0" prefWidth="80.0" styleClass="search-button" stylesheets="@style/style.css" text="Preparati" textFill="WHITE" />
                                 <Pane prefHeight="70.0" prefWidth="10.0" />
                                 <Button mnemonicParsing="false" onAction="#switchToMenu" prefHeight="40.0" prefWidth="80.0" styleClass="search-button" stylesheets="@style/style.css" text="Home" textFill="WHITE" />
                             </children>
@@ -1952,7 +1952,7 @@
                                                                             <Image url="@img/verdura/pomodori/costoluto.jpg" />
                                                                         </ImageView>
                                                                         <ComboBox fx:id="peso58" layoutX="25.0" layoutY="182.0" prefHeight="32.0" prefWidth="165.0" promptText="Scegli il peso (Kg)" styleClass="comboBox" stylesheets="@style/style.css" />
-                                                                        <Label layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="1.99€ /Kg">
+                                                                        <Label fx:id="prezzoCostoluto" layoutX="129.0" layoutY="8.0" prefHeight="43.0" prefWidth="112.0" text="1.99€ /Kg">
                                                                             <font>
                                                                                 <Font name="Cambria" size="24.0" />
                                                                             </font></Label>
