@@ -80,14 +80,7 @@ Quindi si può intuire la facilità di navigazione e di comprensione per l'utent
    - **Variabili**:
      - Come nei metodi precedenti, utilizza `fxmlLoader`, `scene` e `stage`.
 
-
-
-
-
-
-
-
-
+---
 
 > ### FruttaController.java
 
@@ -99,13 +92,13 @@ Quindi si può intuire la facilità di navigazione e di comprensione per l'utent
 - **`totalLabel`**: `Label` che mostra il totale del carrello.
 
 
-### Metodi principali:
+### Descrizione dei metodi del codice Java
 
-#### 1. `initialize()`
+1. **`initialize()`**
 - **Descrizione**: Questo metodo viene chiamato automaticamente all'inizializzazione della scena. Aggiorna la sezione del carrello e inizializza i combo box per selezionare i pesi dei prodotti.
 - **Variabili**: Non usa variabili locali ma richiama i metodi `aggiornaSezCarrello()` e `populateComboBox()`.
 
-#### 2. `aggiornaSezCarrello()`
+2. **`aggiornaSezCarrello()`**
 - **Descrizione**: Questo metodo aggiorna il contenuto della `cartListView`, cancellando eventuali elementi precedenti e aggiungendo i prodotti presenti nel carrello.
 - **Variabili**:
   - `total`: Tiene traccia del totale del carrello.
@@ -118,47 +111,45 @@ Quindi si può intuire la facilità di navigazione e di comprensione per l'utent
   - `removeButton`: Un pulsante per rimuovere l'elemento dal carrello.
   - `index`: Variabile necessaria per gestire correttamente l'indice dell'elemento da rimuovere.
 
-#### 3. `arrotondaAlCent(double value)`
+3. **`arrotondaAlCent(double value)`**
 - **Descrizione**: Arrotonda un valore numerico al centesimo (due decimali) usando `BigDecimal`.
 - **Variabili**:
   - `bd`: Un oggetto `BigDecimal` usato per effettuare l'arrotondamento.
 
-#### 4. `immDiConferma()`
+4. **`immDiConferma()`**
 - **Descrizione**: Cambia il colore del bottone `bottOk` per indicare la conferma dell'aggiunta di un prodotto al carrello.
 - **Variabili**:
   - `pause`: Una pausa di 2 secondi prima di riportare il colore del bottone allo stato iniziale.
 
-#### 5. `immDiErrore()`
+5. **`immDiErrore()`**
 - **Descrizione**: Cambia il colore di `bottOk` in rosso per indicare un errore, come quando non è selezionato un peso. Simile a `immDiConferma()` ma per gli errori.
 - **Variabili**: Simile a `immDiConferma`.
 
-#### 6. `aggiuntaProdotto(String prodotto, double prezzoAlKg, ComboBox<Double> combo)`
+6. **`aggiuntaProdotto(String prodotto, double prezzoAlKg, ComboBox<Double> combo)`**
 - **Descrizione**: Aggiunge un prodotto al carrello. Controlla se il peso è selezionato, altrimenti segnala un errore. Se tutto è corretto, calcola il prezzo totale (peso * prezzoAlKg) e lo aggiunge al carrello.
 - **Variabili**:
   - `peso`: Il peso selezionato dall'utente.
   - `combo`: Il `ComboBox` da cui viene selezionato il peso del prodotto.
 
-#### 7. `aggMele()`, `aggPere()`, ..., `aggPrugne()`
+7. **`aggMele()`, `aggPere()`, ..., `aggPrugne()`**
 - **Descrizione**: Metodi specifici per aggiungere prodotti come mele, pere, banane, ecc. al carrello, ognuno con il proprio prezzo al kg.
 - **Variabili**: Chiamano `aggiuntaProdotto()` con il nome del prodotto, il prezzo al kg e il rispettivo `ComboBox`.
 
-#### 8. `aggiungiProdotto(String prodotto, double prezzo, double peso)`
+8. **`aggiungiProdotto(String prodotto, double prezzo, double peso)`**
 - **Descrizione**: Aggiunge un prodotto al carrello, interfacciandosi con la classe `ShoppingCart`.
 - **Variabili**:
   - `prodotto`: Il nome del prodotto.
   - `prezzo`: Il prezzo totale del prodotto.
   - `peso`: Il peso selezionato.
 
-#### 9. `populateComboBox(ComboBox<Double> peso)`
+9. **`populateComboBox(ComboBox<Double> peso)`**
 - **Descrizione**: Popola un `ComboBox` con una lista di valori di peso, che va da 5.00 kg a 0.10 kg, con decrementi di 0.05.
 - **Variabili**:
   - `i`: Rappresenta i valori del peso che vengono aggiunti al `ComboBox`.
+  
+#### Metodi per il cambio scena:
 
----
-
-### Metodi per il cambio scena:
-
-I metodi seguenti cambiano la scena visualizzata nell'interfaccia:
+I metodi seguenti cambiano la scena visualizzata nell'interfaccia, vedi descrizione precedente per un'approfondimento maggiore:
 - **switchToProductsView(MouseEvent mouseEvent)**: Passa alla schermata dei prodotti.
 - **switchToCart(MouseEvent mouseEvent)**: Passa alla schermata del carrello.
 - **switchToFrutta(ActionEvent event)**: Passa alla schermata dei prodotti di frutta.
@@ -170,7 +161,626 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
 
 ---
 
-### Funzionamento globale:
-- L'applicazione gestisce un carrello della spesa virtuale, permettendo agli utenti di selezionare i pesi per diversi prodotti e visualizzare l'importo totale.
-- I prodotti possono essere aggiunti o rimossi dal carrello, e la visualizzazione del carrello viene aggiornata automaticamente.
-- Il cambio delle scene consente agli utenti di navigare tra diverse categorie di prodotti.
+> ### PreparatiController.java
+
+### Descrizione delle variabili di classe
+
+- **`peso0, peso1, ..., peso3`**: `ComboBox<Double>` che permettono all'utente di selezionare il peso di 4 diversi prodotti preparati.
+- **`bottOk`**: `Button` per confermare l'aggiunta dei prodotti nel carrello.
+- **`cartListView`**: `ListView<HBox>` che visualizza il contenuto del carrello, includendo le informazioni sui prodotti selezionati.
+- **`totalLabel`**: `Label` che mostra il totale del carrello.
+- **`insalata`**: `ToggleGroup` che include tutti i diversi tipi di prodotto selezionabili con i radioButton.
+- **`imInsalata`**: `ImageView` che mostra il l'immagine del tipo di insalata selezionato attraverso i radioButton.
+
+
+### Descrizione dei metodi del codice Java
+
+1. **`initialize()`**
+- **Descrizione**: Questo metodo viene chiamato automaticamente all'inizializzazione della scena. Aggiorna la sezione del carrello e inizializza i combo box per selezionare i pesi dei prodotti.
+- **Variabili**: Non usa variabili locali ma richiama i metodi `aggiornaSezCarrello()` e `populateComboBox()`.
+
+2. **`aggiornaSezCarrello()`**
+- **Descrizione**: Questo metodo aggiorna il contenuto della `cartListView`, cancellando eventuali elementi precedenti e aggiungendo i prodotti presenti nel carrello.
+- **Variabili**:
+  - `total`: Tiene traccia del totale del carrello.
+  - `prodotti`: ArrayList che contiene i nomi dei prodotti nel carrello.
+  - `prezzi`: ArrayList con i prezzi dei prodotti.
+  - `pesi`: ArrayList con i pesi selezionati per i prodotti.
+  - `s`: Una stringa utilizzata per formattare la descrizione dei prodotti.
+  - `hbox`: Un `HBox` che contiene il pulsante di rimozione e la descrizione del prodotto.
+  - `prodottoLabel`: Label che contiene le informazioni sul prodotto.
+  - `removeButton`: Un pulsante per rimuovere l'elemento dal carrello.
+  - `index`: Variabile necessaria per gestire correttamente l'indice dell'elemento da rimuovere.
+
+3. **`arrotondaAlCent(double value)`**
+- **Descrizione**: Arrotonda un valore numerico al centesimo (due decimali) usando `BigDecimal`.
+- **Variabili**:
+  - `bd`: Un oggetto `BigDecimal` usato per effettuare l'arrotondamento.
+
+4. **`immDiConferma()`**
+- **Descrizione**: Cambia il colore del bottone `bottOk` per indicare la conferma dell'aggiunta di un prodotto al carrello.
+- **Variabili**:
+  - `pause`: Una pausa di 2 secondi prima di riportare il colore del bottone allo stato iniziale.
+
+5. **`immDiErrore()`**
+- **Descrizione**: Cambia il colore di `bottOk` in rosso per indicare un errore, come quando non è selezionato un peso. Simile a `immDiConferma()` ma per gli errori.
+- **Variabili**: Simile a `immDiConferma`.
+
+7. **`aggInsalata()`, `aggMacedonia()`, ..., `aggMelone()`**
+- **Descrizione**: Metodi specifici per aggiungere prodotti come l'insalate, macedonia, melone, ecc. al carrello, ognuno con il proprio prezzo al kg.
+- **Variabili**: Chiamano `aggiungiRiga()` con il nome del prodotto, il prezzo*peso e il rispettivo peso, dopo un controllo se il peso è stato inserito, richiamando in base alla presenza di esso `immDiConferma()` o `immDiErrore()`.
+
+8. **`aggiungiRiga(String prodotto, double prezzo, double peso)`**
+- **Descrizione**: Aggiunge un prodotto al carrello, interfacciandosi con la classe `ShoppingCart`.
+- **Variabili**:
+  - `prodotto`: Il nome del prodotto.
+  - `prezzo`: Il prezzo totale del prodotto.
+  - `peso`: Il peso selezionato.
+
+9. **`populateComboBoxPezzi(ComboBox<Double> peso)`**
+- **Descrizione**: Popola un `ComboBox` con una lista di valori di pezzi, che va da 10.00 a 1.00, con decrementi di 1.00.
+- **Variabili**:
+  - `i`: Rappresenta i valori dei pezzi che vengono aggiunti al `ComboBox`.
+  
+#### Metodi per il cambio scena:
+
+I metodi seguenti cambiano la scena visualizzata nell'interfaccia, vedi descrizione precedente per un'approfondimento maggiore:
+- **switchToProductsView(MouseEvent mouseEvent)**: Passa alla schermata dei prodotti.
+- **switchToCart(MouseEvent mouseEvent)**: Passa alla schermata del carrello.
+- **switchToFrutta(ActionEvent event)**: Passa alla schermata dei prodotti di frutta.
+- **switchToVerduraSimple(ActionEvent event)**: Passa alla schermata dei prodotti di verdura.
+- **switchToPreparati(ActionEvent event)**: Passa alla schermata dei prodotti preparati.
+- **switchToMenu(ActionEvent event)**: Torna al menu principale.
+
+In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `scene` e `stage` per caricare e impostare la nuova scena.
+
+---
+
+> ### VerduraSimpleController.java
+
+### Descrizione delle variabili di classe
+
+- **`ComboBox<Double> peso1, peso2, peso3`**: ComboBox per selezionare il peso di 3 vari prodotti (in kg o pezzi).
+- **`Button bottOk`**: Bottone per confermare l'aggiunta di prodotti al carrello.
+- **`ListView<HBox> cartListView`**: ListView per visualizzare i prodotti aggiunti al carrello.
+- **`Label totalLabel, prezzoCarciofi`**: Label per mostrare rispettivamente il totale del carrello e il prezzo dei carciofi selezionati.
+- **`ToggleGroup carciofi, cavolfiore`**: Gruppi di RadioButton per selezionare varianti di carciofi o cavolfiore.
+- **`ImageView imCarc, imCavol`**: ImageView per mostrare immagini dei carciofi e cavolfiori selezionati.
+
+### Descrizione dei metodi del codice Java
+
+1. **`initialize()`**
+- **Descrizione**: Questo metodo viene chiamato automaticamente all'inizializzazione della scena. Aggiorna la sezione del carrello e inizializza i combo box per selezionare i pesi dei prodotti.
+- **Variabili**: Non usa variabili locali ma richiama i metodi `aggiornaSezCarrello()` e `populateComboBox()`.
+
+2. **`aggiornaSezCarrello()`**
+- **Descrizione**: Questo metodo aggiorna il contenuto della `cartListView`, cancellando eventuali elementi precedenti e aggiungendo i prodotti presenti nel carrello.
+- **Variabili**:
+  - `total`: Tiene traccia del totale del carrello.
+  - `prodotti`: ArrayList che contiene i nomi dei prodotti nel carrello.
+  - `prezzi`: ArrayList con i prezzi dei prodotti.
+  - `pesi`: ArrayList con i pesi selezionati per i prodotti.
+  - `s`: Una stringa utilizzata per formattare la descrizione dei prodotti.
+  - `hbox`: Un `HBox` che contiene il pulsante di rimozione e la descrizione del prodotto.
+  - `prodottoLabel`: Label che contiene le informazioni sul prodotto.
+  - `removeButton`: Un pulsante per rimuovere l'elemento dal carrello.
+  - `index`: Variabile necessaria per gestire correttamente l'indice dell'elemento da rimuovere.
+
+3. **`arrotondaAlCent(double value)`**
+- **Descrizione**: Arrotonda un valore numerico al centesimo (due decimali) usando `BigDecimal`.
+- **Variabili**:
+  - `bd`: Un oggetto `BigDecimal` usato per effettuare l'arrotondamento.
+
+4. **`immDiConferma()`**
+- **Descrizione**: Cambia il colore del bottone `bottOk` per indicare la conferma dell'aggiunta di un prodotto al carrello.
+- **Variabili**:
+  - `pause`: Una pausa di 2 secondi prima di riportare il colore del bottone allo stato iniziale.
+
+5. **`immDiErrore()`**
+- **Descrizione**: Cambia il colore di `bottOk` in rosso per indicare un errore, come quando non è selezionato un peso. Simile a `immDiConferma()` ma per gli errori.
+- **Variabili**: Simile a `immDiConferma`.
+
+6. **`aggiuntaProdotto(String prodotto, double prezzoAlKg, ComboBox<Double> combo)`**
+- **Descrizione**: Aggiunge un prodotto al carrello. Controlla se il peso è selezionato, altrimenti segnala un errore. Se tutto è corretto, calcola il prezzo totale (peso * prezzoAlKg) e lo aggiunge al carrello.
+- **Variabili**:
+  - `peso`: Il peso selezionato dall'utente.
+  - `combo`: Il `ComboBox` da cui viene selezionato il peso del prodotto.
+
+7. **`aggAsparagi()`**
+   - **Descrizione**: Aggiunge una quantità fissa di asparagi al carrello.
+   - **Variabili**: Nessuna specifica.
+   - **Azioni**:
+     - Aggiunge gli asparagi al carrello con un peso fisso di 0.2 kg.
+
+8. **`aggCarciofi()`**
+   - **Descrizione**: Aggiunge carciofi al carrello in base al tipo selezionato (normali o romani).
+   - **Variabili**:
+     - `RadioButton radioSelezionato`: RadioButton selezionato per determinare il tipo di carciofi.
+     - `double mon`: Prezzo del carciofo selezionato.
+   - **Azioni**:
+     - Determina il prezzo dei carciofi selezionati e li aggiunge al carrello.
+
+9. **`radCarciofi()`**
+   - **Descrizione**: Cambia l'immagine e il prezzo mostrato in base al tipo di carciofo selezionato.
+   - **Variabili**:
+     - `String selectedText`: Testo del RadioButton selezionato.
+     - `double mon`: Prezzo variabile in base al tipo di carciofo.
+   - **Azioni**:
+     - Cambia l'immagine visualizzata in `imCarc`.
+     - Aggiorna il prezzo visualizzato in `prezzoCarciofi`.
+
+10. **`aggCarote()`**
+    - **Descrizione**: Aggiunge carote al carrello in base al peso selezionato.
+    - **Variabili**: Nessuna specifica.
+    - **Azioni**:
+      - Aggiunge le carote al carrello chiamando `aggiuntaProdotto`.
+
+11. **`aggCavolfiore()`**
+    - **Descrizione**: Aggiunge cavolfiori al carrello in base al tipo e peso selezionati.
+    - **Variabili**:
+      - `RadioButton carciofiSelectedToggle`: RadioButton selezionato per determinare il tipo di cavolfiore.
+    - **Azioni**:
+      - Aggiunge i cavolfiori al carrello con il peso e tipo selezionato.
+
+12. **`radCavolfiori()`**
+    - **Descrizione**: Cambia l'immagine mostrata per il cavolfiore in base al tipo selezionato.
+    - **Variabili**:
+      - `String selectedText`: Testo del RadioButton selezionato.
+    - **Azioni**:
+      - Cambia l'immagine visualizzata in `imCavol`.
+
+13. **`aggiungiProdotto(String prodotto, double prezzo, double peso)`**
+    - **Descrizione**: Aggiunge un prodotto al carrello con nome, prezzo e peso specificati.
+    - **Variabili**: Nessuna specifica.
+    - **Azioni**:
+      - Usa il metodo di `ShoppingCart` per aggiungere il prodotto al carrello.
+
+14. **`populateComboBox(ComboBox<Double> peso)`**
+    - **Descrizione**: Popola una ComboBox con valori di peso da 5.00 a 0.10 kg.
+    - **Variabili**: 
+      - `i`: Rappresenta i valori del peso che vengono aggiunti al `ComboBox`.
+    - **Azioni**:
+      - Aggiunge i valori arrotondati alla ComboBox.
+
+15. **`populateComboBoxPezzi(ComboBox<Double> peso)`**
+    - **Descrizione**: Popola una ComboBox con valori di pezzi da 10 a 1.
+    - **Variabili**:
+      - `i`: Rappresenta i valori dei pezzi che vengono aggiunti al `ComboBox`.
+    - **Azioni**:
+      - Aggiunge i valori arrotondati alla ComboBox.
+
+#### Metodi per il cambio scena:
+
+I metodi seguenti cambiano la scena visualizzata nell'interfaccia, vedi descrizione precedente per un'approfondimento maggiore:
+- **switchToProductsView(MouseEvent mouseEvent)**: Passa alla schermata dei prodotti.
+- **switchToCart(MouseEvent mouseEvent)**: Passa alla schermata del carrello.
+- **switchToFrutta(ActionEvent event)**: Passa alla schermata dei prodotti di frutta.
+- **switchToVerduraSimple(ActionEvent event)**: Passa alla schermata dei prodotti di verdura semplice.
+- **switchToVerdura(ActionEvent event)**: Passa alla schermata dei prodotti di verdura.
+- **switchToPreparati(ActionEvent event)**: Passa alla schermata dei prodotti preparati.
+- **switchToMenu(ActionEvent event)**: Torna al menu principale.
+
+In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `scene` e `stage` per caricare e impostare la nuova scena.
+
+---
+
+> ### VerduraInsalateController.java
+
+### Descrizione delle variabili di classe
+
+- **`ComboBox<Double> peso0, peso1, peso68`**: ComboBox per selezionare il peso di 69 vari prodotti (in kg o pezzi o in cassette).
+- **`Button bottOk`**: Bottone per confermare l'aggiunta di prodotti al carrello.
+- **`ListView<HBox> cartListView`**: ListView per visualizzare i prodotti aggiunti al carrello.
+- **`Label totalLabel, prezzoCarciofi, ... , prezzoCuoreDiBue`**: Label per mostrare rispettivamente il totale del carrello e il prezzo del prodotto selezionato.
+- **`ToggleGroup carciofi, cavolfiore, ..., datterino`**: Gruppi di RadioButton per selezionare varianti di carciofi o cavolfiore o tanti altri prodotti.
+- **`ImageView imCarc, imCavol, ..., imDaterino`**: ImageView per mostrare immagini dei carciofi, cavolfiori selezionati e altri prodotti.
+- **`CheckBox c54, c55, ..., c59`**: Cassetta si o no (denominazione è c+numero del peso cioè quello della combobox).
+
+### Descrizione dei metodi del codice Java
+
+1. **`initialize()`**
+- **Descrizione**: Questo metodo viene chiamato automaticamente all'inizializzazione della scena. Aggiorna la sezione del carrello e inizializza i combo box per selezionare i pesi dei prodotti, in base alla tipologia, inoltre imposta un unico gestore di eventi per tutte le CheckBox.
+- **Variabili**: Non usa variabili locali ma richiama i metodi `aggiornaSezCarrello()`, `populateComboBox()`, `populateComboBoxPezzi()`, `populateComboBoxPiccolo()`, `populateComboBoxGrande()` e `sceltaCassetta()`.
+
+2. **`aggiornaSezCarrello()`**
+- **Descrizione**: Questo metodo aggiorna il contenuto della `cartListView`, cancellando eventuali elementi precedenti e aggiungendo i prodotti presenti nel carrello.
+- **Variabili**:
+  - `total`: Tiene traccia del totale del carrello.
+  - `prodotti`: ArrayList che contiene i nomi dei prodotti nel carrello.
+  - `prezzi`: ArrayList con i prezzi dei prodotti.
+  - `pesi`: ArrayList con i pesi selezionati per i prodotti.
+  - `s`: Una stringa utilizzata per formattare la descrizione dei prodotti.
+  - `hbox`: Un `HBox` che contiene il pulsante di rimozione e la descrizione del prodotto.
+  - `prodottoLabel`: Label che contiene le informazioni sul prodotto.
+  - `removeButton`: Un pulsante per rimuovere l'elemento dal carrello.
+  - `index`: Variabile necessaria per gestire correttamente l'indice dell'elemento da rimuovere.
+
+3. **`arrotondaAlCent(double value)`**
+- **Descrizione**: Arrotonda un valore numerico al centesimo (due decimali) usando `BigDecimal`.
+- **Variabili**:
+  - `bd`: Un oggetto `BigDecimal` usato per effettuare l'arrotondamento.
+
+4. **`immDiConferma()`**
+- **Descrizione**: Cambia il colore del bottone `bottOk` per indicare la conferma dell'aggiunta di un prodotto al carrello.
+- **Variabili**:
+  - `pause`: Una pausa di 2 secondi prima di riportare il colore del bottone allo stato iniziale.
+
+5. **`immDiErrore()`**
+- **Descrizione**: Cambia il colore di `bottOk` in rosso per indicare un errore, come quando non è selezionato un peso. Simile a `immDiConferma()` ma per gli errori.
+- **Variabili**: Simile a `immDiConferma`.
+
+6. **`aggiuntaProdotto(String prodotto, double prezzoAlKg, ComboBox<Double> combo)`**
+- **Descrizione**: Aggiunge un prodotto al carrello. Controlla se il peso è selezionato, altrimenti segnala un errore. Se tutto è corretto, calcola il prezzo totale (peso * prezzoAlKg) e lo aggiunge al carrello.
+- **Variabili**:
+  - `peso`: Il peso selezionato dall'utente.
+  - `combo`: Il `ComboBox` da cui viene selezionato il peso del prodotto.
+
+7. **`aggAsparagi(), ...,aggMenta()`**
+   - **Descrizione**: Aggiunge una quantità di prodotti al carrello, che può essere fissa o selezionabile, inoltre il prodotto può essere variabile nella tipologia.
+   - **Variabili**: Nessuna specifica.
+   - **Azioni**:
+     - Aggiunge i prodotti al carrello con un peso fisso o non, attraverso `aggiuntaProdotto()`.
+
+8. **`aggCarciofi(), ..., aggCuoreDiBue()`**
+   - **Descrizione**: Aggiunge prodotti al carrello in base al tipo selezionato (normali o altri tipi), o alla scelta di prendere le cassette o non.
+   - **Variabili**:
+     - `RadioButton radioSelezionato`: RadioButton selezionato per determinare il tipo di prodotto.
+     - `double mon`: Prezzo del prodotto selezionato.
+     - `String s` : Stringa per indicare la scelta di cassetta o non.
+     - `String selectedText` : Stringa per indicare il tipo di prodotto scelto.
+   - **Azioni**:
+     - Determina il prezzo dei prodotti selezionati e li aggiunge al carrello, variandone il prezzo in base al tipo o alla scelta della cassetta.
+
+9. **`radCarciofi(), ..., radCiliegino()`**
+   - **Descrizione**: Cambia l'immagine e il prezzo mostrato in base al tipo di prodotto selezionato.
+   - **Variabili**:
+     - `String selectedText`: Testo del RadioButton selezionato.
+     - `double mon`: Prezzo variabile in base al tipo di prodotto selezionato.
+   - **Azioni**:
+     - Cambia l'immagine visualizzata in `imProdotto`.
+     - Aggiorna il prezzo visualizzato in `prezzoProdotto`.
+13. **`aggiungiProdotto(String prodotto, double prezzo, double peso)`**
+    - **Descrizione**: Aggiunge un prodotto al carrello con nome, prezzo e peso specificati.
+    - **Variabili**: Nessuna specifica.
+    - **Azioni**:
+      - Usa il metodo di `ShoppingCart` per aggiungere il prodotto al carrello.
+
+14. **`populateComboBox(ComboBox<Double> peso)`**
+    - **Descrizione**: Popola una ComboBox con valori di peso da 5.00 a 0.10 kg.
+    - **Variabili**: 
+      - `i`: Rappresenta i valori del peso che vengono aggiunti al `ComboBox`.
+    - **Azioni**:
+      - Aggiunge i valori arrotondati alla ComboBox.
+
+15. **`populateComboBoxPezzi(ComboBox<Double> peso)`**
+    - **Descrizione**: Popola una ComboBox con valori di pezzi da 10 a 1.
+    - **Variabili**:
+      - `i`: Rappresenta i valori dei pezzi che vengono aggiunti al `ComboBox`.
+    - **Azioni**:
+      - Aggiunge i valori arrotondati alla ComboBox.
+16. **`populateComboBoxPiccolo(ComboBox<Double> peso)`**
+    - **Descrizione**: Popola una ComboBox con valori di peso da 0.90 a 0.15 kg, decrementando di 0.15 Kg.
+    - **Variabili**: 
+      - `i`: Rappresenta i valori del peso che vengono aggiunti al `ComboBox`.
+    - **Azioni**:
+      - Aggiunge i valori arrotondati alla ComboBox.
+17. **`populateComboBoxGrande(ComboBox<Double> peso)`**
+    - **Descrizione**: Popola una ComboBox con valori di peso da 5.00 a 0.30 kg, decrementando di 0.10 Kg.
+    - **Variabili**: 
+      - `i`: Rappresenta i valori del peso che vengono aggiunti al `ComboBox`.
+    - **Azioni**:
+      - Aggiunge i valori arrotondati alla ComboBox.
+18. **`sceltaCassetta(CheckBox checkBox, ComboBox<Double> comboBox, Label labPrezzi)`**
+   - **Descrizione**: Questo metodo gestisce il comportamento di una ComboBox e di una Label in base allo stato di selezione di una CheckBox. Se la CheckBox è selezionata, il metodo popola la ComboBox con i                            valori di peso 1.0, 2.0, e 3.0 kg e riduce il prezzo mostrato nella Label di 1.0 euro al kg. Se la CheckBox non è selezionata, la ComboBox viene ripopolata con i valori originali, e il                            prezzo nella Label viene aumentato di 1.0 euro al kg.
+   - **Variabili**:
+     - `val`: Rappresenta il prezzo corrente, calcolato sottraendo o aggiungendo 1.0 euro al valore estratto dalla Label `labPrezzi`.
+   
+   - **Azioni**:
+     - **Controllo dello stato della CheckBox**: Verifica se la CheckBox è selezionata o meno utilizzando il metodo `isSelected()`.
+     - **Pulizia della ComboBox**: Usa `comboBox.getItems().clear()` per rimuovere tutti i valori attualmente presenti nella ComboBox.
+     - **Popolamento della ComboBox**: 
+       - Se la CheckBox è selezionata, la ComboBox viene popolata con i valori 1.0, 2.0, e 3.0 kg usando `comboBox.getItems().addAll(1.0, 2.0, 3.0)`.
+       - Se la CheckBox non è selezionata, viene richiamato il metodo `populateComboBox(comboBox)` per ripristinare i valori originali della ComboBox.
+     - **Modifica del prezzo nella Label**:
+       - Se la CheckBox è selezionata, il metodo estrapola i primi 3 caratteri del testo della Label `labPrezzi`, li converte in un valore `double` usando `Double.parseDouble()`, sottrae 1.0, e aggiorna la Label          con il nuovo prezzo.
+       - Se la CheckBox non è selezionata, viene seguito lo stesso processo, ma il prezzo viene aumentato di 1.0.
+     - **Arrotondamento del prezzo**: Il metodo chiama `arrotondaAlCent(val)` per arrotondare il prezzo al centesimo.
+     - **Aggiornamento della Label**: Dopo il calcolo e l'arrotondamento, il testo della Label viene aggiornato per mostrare il nuovo prezzo, formattato come "X.X€/Kg".
+
+#### Metodi per il cambio scena:
+
+I metodi seguenti cambiano la scena visualizzata nell'interfaccia, vedi descrizione precedente per un'approfondimento maggiore:
+- **switchToProductsView(MouseEvent mouseEvent)**: Passa alla schermata dei prodotti.
+- **switchToCart(MouseEvent mouseEvent)**: Passa alla schermata del carrello.
+- **switchToFrutta(ActionEvent event)**: Passa alla schermata dei prodotti di frutta.
+- **switchToVerduraSimple(ActionEvent event)**: Passa alla schermata dei prodotti di verdura semplice.
+- **switchToPreparati(ActionEvent event)**: Passa alla schermata dei prodotti preparati.
+- **switchToMenu(ActionEvent event)**: Torna al menu principale.
+
+In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `scene` e `stage` per caricare e impostare la nuova scena.
+
+---
+
+> ### CartController.java
+
+### Descrizione delle variabili di classe
+
+- **`cartListView`**: `ListView<HBox>` Rappresenta la lista dei prodotti nel carrello, visualizzata sotto forma di `HBox` contenenti informazioni sui prodotti e pulsanti di rimozione.
+- **`totalLabel`**: `Label`  Mostra il totale dell'importo degli articoli presenti nel carrello.
+- **`bottOk`, `bottConcludi`**: `Button` `bottOk` è un pulsante per confermare le operazioni, mentre `bottConcludi` è un pulsante per finalizzare l'ordine.
+- **`datePicker`**: `DatePicker` Consente all'utente di selezionare una data per il ritiro degli ordini.
+- **`timeComboBox`**: `ComboBox<String>` Permette all'utente di selezionare l'ora di ritiro tra quelle disponibili.
+- **`nomeField`, `emailField`, `emailVerificationField`**: `TextField` Campi di testo per inserire il nome, l'email e la verifica dell'email dell'utente.
+- **`contEmail`**: `int[]` Array utilizzato per gestire l'autenticazione dell'email, dove ogni indice rappresenta uno stato diverso del processo di autenticazione.
+
+### Descrizione dei metodi del codice Java
+
+1. **`initialize()`**
+   - **Descrizione**: Metodo chiamato automaticamente durante l'inizializzazione del controller. Configura il carrello e le opzioni di tempo.
+   - **Azioni**:
+     - Chiama `aggiornaSezCarrello()` per aggiornare il contenuto visualizzato del carrello.
+     - Chiama `populateOrariBox(timeComboBox)` per popolare il `ComboBox` degli orari con gli intervalli di tempo disponibili per il ritiro.
+
+2. **`concludi()`**
+   - **Descrizione**: Gestisce la conclusione dell'ordine e invia un'email di conferma.
+   - **Variabili**:
+     - `LocalDate selectedDate`: Data selezionata dall'utente tramite il `DatePicker`.
+   - **Azioni**:
+     - Verifica la validità dei dati inseriti chiamando `noProblemi()`.
+     - Invia un'email riepilogo al commerciante e al cliente utilizzando il metodo `sendMail` della classe `invioEmail`.
+     - Pulisce il contenuto del carrello sia nella vista che nel salvataggio dei dati.
+     - Aggiunge un `HBox` con un messaggio di ringraziamento al `cartListView`.
+     - Se ci sono problemi, cambia il colore del bottone `bottOk` per indicare un errore temporaneo.
+
+3. **`stampaScontrinoEmail(LocalDate selectedDate)`**
+   - **Descrizione**: Genera una stringa che rappresenta il riepilogo dell'ordine per l'email di conferma.
+   - **Variabili**:
+     - `double total`: Totale del prezzo calcolato.
+     - `ArrayList<String> prodotti`: Lista dei nomi dei prodotti nel carrello.
+     - `ArrayList<Double> prezzi`: Lista dei prezzi dei prodotti.
+     - `ArrayList<Double> pesi`: Lista dei pesi dei prodotti.
+   - **Azioni**:
+     - Crea una stringa che include i dettagli dei prodotti, il loro prezzo e peso.
+     - Calcola il totale e lo arrotonda.
+     - Restituisce la stringa formattata con i dettagli dell'ordine.
+
+4. **`aggiornaSezCarrello()`**
+   - **Descrizione**: Aggiorna la sezione del carrello visualizzata, mostrando i prodotti attualmente nel carrello e il totale.
+   - **Variabili**:
+     - `double total`: Totale del prezzo calcolato.
+     - `ArrayList<String> prodotti`: Lista dei nomi dei prodotti nel carrello.
+     - `ArrayList<Double> prezzi`: Lista dei prezzi dei prodotti.
+     - `ArrayList<Double> pesi`: Lista dei pesi dei prodotti.
+   - **Azioni**:
+     - Pulisce il contenuto corrente del `cartListView`.
+     - Se il carrello è vuoto, aggiunge un messaggio di avviso e un'immagine.
+     - Se ci sono prodotti, crea un `HBox` per ogni prodotto con un `Label` e un pulsante "Rimuovi", e aggiorna il totale.
+
+5. **`noProblemi()`**
+   - **Descrizione**: Verifica che tutti i dati inseriti siano validi e che il carrello non sia vuoto.
+   - **Variabili**:
+     - `ArrayList<String> prodotti`: Lista dei prodotti nel carrello.
+   - **Azioni**:
+     - Controlla che la data sia valida, l'email sia corretta, il nome sia valido, e che il carrello non sia vuoto.
+     - Verifica che l'email sia stata autenticata.
+     - Restituisce `true` se tutti i controlli sono passati, altrimenti `false`.
+
+6. **`autenticazioneEmail()`**
+   - **Descrizione**: Gestisce l'autenticazione dell'email inviando una password temporanea.
+   - **Variabili**:
+     - `contEmail[]`: Array per gestire lo stato dell'autenticazione email e la password temporanea.
+   - **Azioni**:
+     - Verifica se l'email è valida.
+     - Genera una password temporanea e la invia all'email dell'utente.
+     - Aggiorna lo stato dell'autenticazione e il colore del bottone `bottConcludi` per indicare un errore in caso di email non valida.
+
+7. **`verificaAutenticazione()`**
+   - **Descrizione**: Verifica se la password inserita per l'email corrisponde a quella inviata.
+   - **Variabili**:
+     - `contEmail[]`: Array per gestire lo stato dell'autenticazione email e la password temporanea.
+   - **Azioni**:
+     - Confronta la password inserita con quella temporanea.
+     - Aggiorna lo stato dell'autenticazione e il colore del bottone `bottConcludi` in base al risultato della verifica.
+
+8. **`genPasswordTemp()`**
+   - **Descrizione**: Genera una password temporanea a 6 cifre.
+   - **Azioni**:
+     - Usa `Random` per generare un numero casuale compreso tra 0 e 999999.
+     - Restituisce la password generata.
+
+9. **`isValidDate(DatePicker datePicker)`**
+   - **Descrizione**: Verifica se la data selezionata è valida, cioè non è una data passata o un giorno festivo.
+   - **Variabili**:
+     - `LocalDate selectedDate`: Data selezionata dall'utente.
+     - `LocalDate currentDate`: Data odierna.
+   - **Azioni**:
+     - Controlla se la data è vuota, passata o un giorno festivo.
+     - Restituisce `true` se la data è valida, altrimenti `false`.
+
+10. **`getPasqua(int year)`**
+    - **Descrizione**: Calcola la data della Pasqua per un anno specifico utilizzando l'algoritmo di Meeus/Jones/Butcher.
+    - **Variabili**:
+      - `int year`: Anno per cui calcolare la data della Pasqua.
+    - **Azioni**:
+      - Esegue calcoli complessi per determinare il giorno e il mese della Pasqua.
+      - Restituisce la data della Pasqua come `LocalDate`.
+
+11. **`isNomeValido(String nome)`**
+    - **Descrizione**: Verifica se il nome inserito è valido, consentendo solo lettere e apostrofi.
+    - **Variabili**:
+      - `String nome`: Nome da verificare.
+    - **Azioni**:
+      - Usa una espressione regolare per controllare il formato del nome.
+      - Restituisce `true` se il nome è valido, altrimenti `false`.
+
+12. **`isEmailValida(String email)`**
+    - **Descrizione**: Verifica se l'email inserita è valida, seguendo un pattern standard.
+    - **Variabili**:
+      - `String email`: Email da verificare.
+    - **Azioni**:
+      - Usa una espressione regolare per controllare il formato dell'email.
+      - Restituisce `true` se l'email è valida, altrimenti `false`.
+
+13. **`arrotondaAlCent(double value)`**
+    - **Descrizione**: Arrotonda un valore doppio a due decimali utilizzando `BigDecimal`.
+    - **Variabili**:
+      - `double value`: Valore da arrotondare.
+    - **Azioni**:
+      - Usa `BigDecimal` per arrotondare il valore a due decimali.
+      - Restituisce il valore arrotondato.
+
+14. **`populateOrariBox(ComboBox<String> combobox)`**
+    - **Descrizione**: Popola un `ComboBox` con intervalli di tempo da 9:00 a 19:00 con incrementi di 30 minuti.
+    - **Variabili**:
+      - `ComboBox<String> combobox`: `ComboBox` da popolare.
+    - **Azioni**:
+      - Usa due cicli annidati per generare intervalli di tempo di 30 minuti e aggiungerli al `ComboBox`.
+
+#### Metodi per il cambio scena:
+
+I metodi seguenti cambiano la scena visualizzata nell'interfaccia, vedi descrizione precedente per un'approfondimento maggiore:
+- **switchToProductsView(MouseEvent mouseEvent)**: Passa alla schermata dei prodotti.
+- **switchToCart(MouseEvent mouseEvent)**: Passa alla schermata del carrello.
+- **switchToFrutta(ActionEvent event)**: Passa alla schermata dei prodotti di frutta.
+- **switchToVerduraSimple(ActionEvent event)**: Passa alla schermata dei prodotti di verdura semplice.
+- **switchToPreparati(ActionEvent event)**: Passa alla schermata dei prodotti preparati.
+- **switchToMenu(ActionEvent event)**: Torna al menu principale.
+
+In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `scene` e `stage` per caricare e impostare la nuova scena.
+
+---
+
+> ### ShoppingCart.java
+
+### Descrizione delle variabili di classe
+
+1. **`private static final ShoppingCart instance`**
+   - **Descrizione**: Rappresenta l'unica istanza della classe `ShoppingCart`, realizzando il pattern Singleton. Essendo `static` e `final`, questa variabile è condivisa da tutte le istanze della classe e non può essere modificata dopo l'inizializzazione.
+   - **Tipo**: `ShoppingCart`
+   - **Valore**: È inizializzato direttamente con una nuova istanza di `ShoppingCart` al momento della dichiarazione.
+
+2. **`private ArrayList<String> prodotti`**
+   - **Descrizione**: Memorizza la lista dei nomi dei prodotti aggiunti al carrello. È un `ArrayList` di stringhe, che consente di aggiungere, rimuovere e accedere ai nomi dei prodotti in modo dinamico.
+   - **Tipo**: `ArrayList<String>`
+   - **Valore Iniziale**: È inizializzato come una nuova `ArrayList` vuota al momento della dichiarazione.
+
+3. **`private ArrayList<Double> pesi`**
+   - **Descrizione**: Memorizza la lista dei pesi dei prodotti aggiunti al carrello. È un `ArrayList` di numeri a virgola mobile (`Double`), permettendo di gestire i pesi associati ai prodotti in modo dinamico.
+   - **Tipo**: `ArrayList<Double>`
+   - **Valore Iniziale**: È inizializzato come una nuova `ArrayList` vuota al momento della dichiarazione.
+
+4. **`private ArrayList<Double> prezzi`**
+   - **Descrizione**: Memorizza la lista dei prezzi dei prodotti aggiunti al carrello. È un `ArrayList` di numeri a virgola mobile (`Double`), che consente di gestire i prezzi dei prodotti in modo dinamico.
+   - **Tipo**: `ArrayList<Double>`
+   - **Valore Iniziale**: È inizializzato come una nuova `ArrayList` vuota al momento della dichiarazione.
+
+### Descrizione dei metodi del codice Java
+
+1. **`getInstance()`**
+   - **Descrizione**: Fornisce l'unica istanza della classe `ShoppingCart`, implementata come un singleton. Questo metodo garantisce che ci sia solo una copia della classe `ShoppingCart` durante l'esecuzione del programma.
+   - **Variabili di Classe**:
+     - `instance`: Rappresenta l'unica istanza della classe `ShoppingCart`, creata all'inizio e mai modificata, in conformità con il design singleton.
+   - **Azioni**:
+     - Restituisce l'istanza unica della classe `ShoppingCart`.
+
+2. **`addProduct(String prodotto, double prezzo, double peso)`**
+   - **Descrizione**: Aggiunge un nuovo prodotto al carrello, inclusi il nome, il prezzo e il peso.
+   - **Variabili di Classe**:
+     - `prodotti`: Lista che contiene i nomi dei prodotti nel carrello.
+     - `prezzi`: Lista che contiene i prezzi dei prodotti nel carrello.
+     - `pesi`: Lista che contiene i pesi dei prodotti nel carrello.
+   - **Azioni**:
+     - Aggiunge il nome del prodotto alla lista `prodotti`.
+     - Aggiunge il prezzo del prodotto alla lista `prezzi`.
+     - Aggiunge il peso del prodotto alla lista `pesi`.
+
+3. **`getProdotti()`**
+   - **Descrizione**: Restituisce la lista dei nomi dei prodotti attualmente presenti nel carrello.
+   - **Variabili di Classe**:
+     - `prodotti`: Lista che contiene i nomi dei prodotti nel carrello.
+   - **Azioni**:
+     - Restituisce la lista `prodotti`.
+
+4. **`getPesi()`**
+   - **Descrizione**: Restituisce la lista dei pesi dei prodotti presenti nel carrello.
+   - **Variabili di Classe**:
+     - `pesi`: Lista che contiene i pesi dei prodotti nel carrello.
+   - **Azioni**:
+     - Restituisce la lista `pesi`.
+
+5. **`getPrezzi()`**
+   - **Descrizione**: Restituisce la lista dei prezzi dei prodotti presenti nel carrello.
+   - **Variabili di Classe**:
+     - `prezzi`: Lista che contiene i prezzi dei prodotti nel carrello.
+   - **Azioni**:
+     - Restituisce la lista `prezzi`.
+
+6. **`clear()`**
+   - **Descrizione**: Rimuove tutti i prodotti, i pesi e i prezzi dal carrello, svuotandolo completamente.
+   - **Variabili di Classe**:
+     - `prodotti`: Lista che viene svuotata.
+     - `pesi`: Lista che viene svuotata.
+     - `prezzi`: Lista che viene svuotata.
+   - **Azioni**:
+     - Svuota la lista `prodotti`.
+     - Svuota la lista `pesi`.
+     - Svuota la lista `prezzi`.
+
+7. **`removeProduct(int index)`**
+   - **Descrizione**: Rimuove un prodotto specifico dal carrello in base all'indice fornito. Se l'indice è valido, il prodotto, il prezzo e il peso corrispondenti vengono rimossi dalle rispettive liste.
+   - **Variabili di Classe**:
+     - `prodotti`: Lista dalla quale viene rimosso l'elemento.
+     - `pesi`: Lista dalla quale viene rimosso l'elemento.
+     - `prezzi`: Lista dalla quale viene rimosso l'elemento.
+   - **Azioni**:
+     - Controlla se l'indice è valido.
+     - Rimuove l'elemento all'indice specificato dalla lista `prodotti`.
+     - Rimuove l'elemento all'indice specificato dalla lista `prezzi`.
+     - Rimuove l'elemento all'indice specificato dalla lista `pesi`.
+   
+---
+
+> ### invioEmail.java
+
+### Descrizione delle variabili di classe
+
+   - **`props`**: Proprietà per configurare il server SMTP di Gmail.
+   - **`session`**: Sessione email con autenticazione.
+   - **`message`**: Messaggio email da inviare.
+
+### Descrizione dei metodi del codice Java
+
+1. **`sendMail(String dest, String mitt, String oggetto, String testoEmail)`**
+   - **Descrizione**: Configura e invia un'email utilizzando il server SMTP di Gmail. Questo metodo è utilizzato per inviare messaggi di posta elettronica specificando il destinatario, il mittente, l'oggetto e        il corpo del messaggio.
+   - **Variabili**:
+     - **`dest`**: Indirizzo email del destinatario.
+     - **`mitt`**: Indirizzo email del mittente.
+     - **`oggetto`**: Oggetto dell'email (titolo).
+     - **`testoEmail`**: Corpo del messaggio dell'email.
+     - **`props`**: Proprietà di configurazione per il server SMTP, utilizzate per impostare le credenziali e le opzioni di sicurezza.
+     - **`session`**: Sessione email configurata con le proprietà e l'autenticazione.
+     - **`message`**: Oggetto `MimeMessage` che rappresenta il messaggio email da inviare.
+     - **`fromAddress`**: Indirizzo email del mittente creato come oggetto `InternetAddress`.
+     - **`toAddress`**: Indirizzo email del destinatario creato come oggetto `InternetAddress`.
+   - **Azioni**:
+     - **Configurazione delle Proprietà**: Imposta le proprietà per il server SMTP di Gmail, inclusi l'host, la porta, l'autenticazione e la sicurezza TLS.
+     - **Creazione della Sessione**: Crea una sessione di email utilizzando le proprietà configurate e un autenticatore con le credenziali dell'email dell'app.
+     - **Creazione del Messaggio**: Utilizza la sessione per creare un messaggio email (`MimeMessage`), impostando l'oggetto e il testo del messaggio.
+     - **Impostazione degli Indirizzi**: Configura l'indirizzo del mittente e del destinatario nel messaggio.
+     - **Invio dell'Email**: Usa il metodo `Transport.send(message)` per inviare l'email tramite il server SMTP configurato.
+
+---
+
+> ## Implementazioni possibili
+   Ecco a seguito una possibile lista di future implementazioni:
+   - Donazioni in base alla spesa per la conclusione;
+   - Implementazioni per modifica di prodotti da remoto;
+   - Implementazione di azioni grafiche migliori;
+   - Implementazione di servizio di consegna;
+   - Implementazione di servizio di registrazione account.
+> ## Conclusioni
+Lavoro realizzato da me con aiuto di dispense in internet.
+Grazie per la lettura.
+
+
+   
