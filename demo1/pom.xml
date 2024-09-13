@@ -38,6 +38,27 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+         <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/mail.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>techsoftemail</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/techsoftemail.jar</systemPath>
+        </dependency>
+         <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/activation.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
