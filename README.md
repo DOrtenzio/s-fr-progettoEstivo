@@ -1,4 +1,10 @@
 # Simulazione di ordinazioni per un fruttivendolo
+---
+> [!WARNING]
+> Ci sono problemi nell'importazione delle dipendenze aggiuntive e non centralizzate, se si vuole utilizzare si necessità di importazione manuale, sto cercando di risolvere. Grazie.
+
+---
+
 > ## Indice
 1. Introduzione
 2. Struttura dell'app
