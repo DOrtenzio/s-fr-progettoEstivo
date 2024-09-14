@@ -60,7 +60,7 @@ public class cartController {
             //Invio un'email riepilogo al cliente con quella indicatomi e verificata
             invioEmail.sendMail(emailField.getText(), "fruttaealtro.orderemail@gmail.com", "Riepilogo ordine Frutta e Altro ","Grazie per il tuo ordine!\n"+"\n\nEcco i tuoi prodotti:\n "+stampaScontrinoEmail(selectedDate)+"\n\nQuesta email non ha valevolenza legale.");
             cartListView.getItems().clear(); // Ripulisco il carrello a schermo
-            ShoppingCart.getInstance().clear(); //ma anche a livello di salvataggio
+            testClass.clear(); //ma anche a livello di salvataggio
             totalLabel.setText("0.00€"); //Rimetto 0€ il totale
             //Ringrazio il cliente che ha ordinato, perchè l'educazione sempre prima di tutto, no ?
             HBox hbox = new HBox(); // Creiamo un HBox per contenere il testo
@@ -84,9 +84,9 @@ public class cartController {
     public String stampaScontrinoEmail(LocalDate selectedDate) {
         double total = 0.0; // Rifaccio il conto
         //ArrayList per prodotti, prezzi e quantità
-        ArrayList<String> prodotti = ShoppingCart.getInstance().getProdotti();
-        ArrayList<Double> prezzi = ShoppingCart.getInstance().getPrezzi();
-        ArrayList<Double> pesi = ShoppingCart.getInstance().getPesi();
+        ArrayList<String> prodotti = testClass.getProdotti();
+        ArrayList<Double> prezzi = testClass.getPrezzi();
+        ArrayList<Double> pesi = testClass.getPesi();
         String singoloProdotto,scontrinoIntero="Ordine di "+nomeField.getText()+"; contatti: "+emailField.getText()+"; per data: "+selectedDate+" per ora: "+timeComboBox.getValue()+" .\n";
         //singoloProdotto = singolo prodotto con prezzo e quantità, scontrinoIntero = scontrino intero che si stamperà
         for (int i = 0; i < prodotti.size(); i++) { //i= indice che scorre nell'array list
@@ -107,9 +107,9 @@ public class cartController {
         cartListView.getItems().clear(); // Pulisco tutti gli items nella lista a schermo
         double total = 0.0; // Rifaccio il conto
 
-        ArrayList<String> prodotti = ShoppingCart.getInstance().getProdotti();
-        ArrayList<Double> prezzi = ShoppingCart.getInstance().getPrezzi();
-        ArrayList<Double> pesi = ShoppingCart.getInstance().getPesi();
+        ArrayList<String> prodotti = testClass.getProdotti();
+        ArrayList<Double> prezzi = testClass.getPrezzi();
+        ArrayList<Double> pesi = testClass.getPesi();
 
         if (prodotti.isEmpty()){
             HBox hbox = new HBox(); // Creiamo un HBox per contenere il testo
@@ -154,7 +154,7 @@ public class cartController {
                 int index = i; // Necessario per catturare l'indice corretto per cancellare
                 removeButton.setOnAction(e -> { //All'azione
                     // Rimuoviamo l'elemento dal carrello e aggiorniamo la vista dello "scontrino"
-                    ShoppingCart.getInstance().removeProduct(index);
+                    testClass.removeProduct(index);
                     //Metodo immErr di Fruttacontroller
                     bottOk.setStyle("-fx-background-color: #E11518;");
                     PauseTransition pause = new PauseTransition(Duration.seconds(2));
@@ -180,7 +180,7 @@ public class cartController {
     //Controllo se ci sono mancanze da parte dell'utenza
     @FXML
     private boolean noProblemi(){
-        ArrayList<String> prodotti = ShoppingCart.getInstance().getProdotti(); //ArrayList con i prodotti dell'utente
+        ArrayList<String> prodotti = testClass.getProdotti(); //ArrayList con i prodotti dell'utente
         //Se la data è valida (Vedi metodo sotto per capire meglio), se lo è l'email (Vedi sotto anche se un pò inutile qui ma un doppio controllo è sempre meglio), se lo è il nome (Vedi sotto), se l'ordine non è vuoto e se l'email è stata verificats
         if (isValidDate(datePicker) && isEmailValida(emailField.getText()) && isNomeValido(nomeField.getText()) && !prodotti.isEmpty() && contEmail[1]==1)
             return true;

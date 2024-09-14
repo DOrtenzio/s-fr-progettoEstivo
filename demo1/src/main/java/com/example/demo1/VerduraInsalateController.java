@@ -68,9 +68,9 @@ public class VerduraInsalateController {
         double total = 0.0; // Variabile che indica il totale
 
         //3 array list per prodotti, prezzi e pesi; ArrayList inizializzati con gli arraylist salvati in ShoppingCart (Vedi il file per il perchè)
-        ArrayList<String> prodotti = ShoppingCart.getInstance().getProdotti(); //Nomi dei prodotti
-        ArrayList<Double> prezzi = ShoppingCart.getInstance().getPrezzi(); //Prezzi dei prodotti
-        ArrayList<Double> pesi = ShoppingCart.getInstance().getPesi(); //Pesi degli articoli
+        ArrayList<String> prodotti = testClass.getProdotti(); //Nomi dei prodotti
+        ArrayList<Double> prezzi = testClass.getPrezzi(); //Prezzi dei prodotti
+        ArrayList<Double> pesi = testClass.getPesi(); //Pesi degli articoli
 
         String s; //Stringa comoda per scrivere il prodotto nella ListView
 
@@ -92,10 +92,10 @@ public class VerduraInsalateController {
             int index = i; // Necessario per catturare l'indice corretto per cancellare da arraylist
             removeButton.setOnAction(e -> { //All'azione
                 // Rimuoviamo l'elemento dal carrello e aggiorniamo la vista dello "scontrino"
-                ShoppingCart.getInstance().removeProduct(index); //Richiamo il metodo per cancellare passandogli l'indice
+                testClass.removeProduct(index); //Richiamo il metodo per cancellare passandogli l'indice
                 //Metodo immErr di FruttaController, semplicemente un cambio colore per 2 secondi
-                bottOk.setStyle("-fx-background-color: #E11518;");
-                PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                bottOk.setStyle("-fx-background-color: #E11518;"); //Rosso
+                PauseTransition pause = new PauseTransition(Duration.seconds(2)); //Grigino
                 pause.setOnFinished(event -> bottOk.setStyle("-fx-background-color: #828282;")); //Risistemo il colore
                 pause.play();
                 aggiornaSezCarrello(); //Richiamo il metodo
@@ -1032,7 +1032,7 @@ public class VerduraInsalateController {
 
     // Metodo per aggiungere una riga
     public void aggiungiProdotto(String prodotto, double prezzo, double peso) {
-        ShoppingCart.getInstance().addProduct(prodotto, prezzo, peso);
+        testClass.addProduct(prodotto, prezzo, peso);
     }
 
     //ComboBox
