@@ -33,15 +33,33 @@ Quindi si può intuire la facilità di navigazione e di comprensione per l'utent
    - **Variabili**: Non utilizza variabili locali.
 
 2. **`aggiornaSezCarrello()`**
-   - **Descrizione**: Aggiorna la ListView che mostra i prodotti presenti nel carrello, i loro prezzi e pesi, e calcola il totale della spesa. Inoltre, consente di rimuovere i prodotti dal carrello.
+   - **Descrizione**: Aggiorna la `ListView` che mostra i prodotti presenti nel carrello, insieme ai loro prezzi e pesi, e ricalcola il totale della spesa. Permette inoltre la rimozione dei prodotti dal carrello e aggiorna automaticamente la visualizzazione dopo ogni rimozione.
+
    - **Variabili**:
-     - `total`: variabile di tipo `double` che tiene traccia del totale della spesa.
-     - `prodotti`, `prezzi`, `pesi`: `ArrayList` che contengono i nomi dei prodotti, i prezzi e i pesi degli articoli nel carrello.
-     - `s`: stringa utilizzata per determinare l'unità di misura del prodotto (es. "pezzi", "kg", "mazzi").
-     - `hbox`: oggetto di tipo `HBox` che contiene la descrizione del prodotto e un pulsante per la rimozione.
-     - `prodottoLabel`: etichetta (`Label`) che mostra il nome del prodotto, il suo peso, l'unità di misura e il prezzo.
-     - `removeButton`: pulsante (`Button`) che consente di rimuovere il prodotto dal carrello.
-     - `index`: variabile `int` che memorizza l'indice corrente del prodotto nell'ArrayList, usata per cancellarlo.
+       - **`total`**: Variabile di tipo `double` che tiene traccia del totale della spesa, inizializzata a 0.
+       - **`prodotti`**, **`prezzi`**, **`pesi`**: Tre `ArrayList` che contengono rispettivamente i nomi dei prodotti, i prezzi e i pesi degli articoli nel carrello. Questi array vengono recuperati tramite i metodi statici di `testClass`.
+       - **`s`**: Stringa che viene utilizzata per determinare l'unità di misura del prodotto (ad esempio, "pezzi", "kg", "mazzi"), in base al tipo di prodotto.
+       - **`hbox`**: Oggetto di tipo `HBox` che contiene l'etichetta (`Label`) con la descrizione del prodotto e un pulsante (`Button`) per la rimozione del prodotto dal carrello.
+       - **`prodottoLabel`**: Etichetta (`Label`) che mostra il nome del prodotto, il suo peso, l'unità di misura e il prezzo.
+       - **`removeButton`**: Pulsante (`Button`) che consente di rimuovere il prodotto dal carrello. Ha un'azione associata che permette la rimozione del prodotto e aggiorna la lista e il totale.
+       - **`index`**: Variabile `int` che memorizza l'indice corrente del prodotto nell'`ArrayList`, utile per identificare quale prodotto rimuovere.
+
+   - **Comportamento del metodo**:
+       1. **Pulizia della `ListView`**: Il metodo inizia cancellando tutti gli elementi correnti dalla `ListView` tramite il metodo `cartListView.getItems().clear()`.
+
+       2. **Inizializzazione delle variabili**: Viene inizializzato il totale a 0 e vengono popolati i tre `ArrayList` (`prodotti`, `prezzi`, `pesi`) chiamando i rispettivi metodi di `testClass`.
+
+       3. **Ciclo sui prodotti**: Il metodo scorre ogni prodotto, prezzo e peso della lista. Per ogni iterazione:
+           - Viene creato un `HBox` per contenere le informazioni del prodotto e il pulsante di rimozione.
+           - A seconda del tipo di prodotto (come "carciofi", "ravanelli" o altri prodotti), viene determinata l'unità di misura da usare (pezzi, mazzi o kg) e memorizzata nella stringa `s`.
+           - Viene creata una `Label` (`prodottoLabel`) che visualizza il nome del prodotto, il peso (arrotondato), l'unità di misura e il prezzo del prodotto.
+           - Viene creato un pulsante di rimozione (`removeButton`) con uno stile personalizzato, che quando cliccato rimuove il prodotto dall'elenco tramite il metodo `removeProduct(index)`, aggiorna il colore del pulsante temporaneamente e chiama di nuovo `aggiornaSezCarrello()` per aggiornare la vista.
+
+       4. **Aggiornamento della `ListView`**: Ogni `HBox`, contenente il nome del prodotto e il pulsante di rimozione, viene aggiunto alla `ListView` (`cartListView.getItems().add(hbox)`).
+
+       5. **Calcolo del totale**: Per ogni prodotto, il prezzo viene aggiunto alla variabile `total`. Alla fine del ciclo, il totale viene arrotondato alla seconda cifra decimale con il metodo `arrotondaAlCent(total)`.
+
+       6. **Aggiornamento del totale nella `Label`**: Il totale viene visualizzato aggiornando il testo di `totalLabel`.
 
 3. **`arrotondaAlCent(double value)`**
    - **Descrizione**: Arrotonda un valore in virgola mobile a due cifre decimali.
@@ -99,17 +117,33 @@ Quindi si può intuire la facilità di navigazione e di comprensione per l'utent
 - **Variabili**: Non usa variabili locali ma richiama i metodi `aggiornaSezCarrello()` e `populateComboBox()`.
 
 2. **`aggiornaSezCarrello()`**
-- **Descrizione**: Questo metodo aggiorna il contenuto della `cartListView`, cancellando eventuali elementi precedenti e aggiungendo i prodotti presenti nel carrello.
-- **Variabili**:
-  - `total`: Tiene traccia del totale del carrello.
-  - `prodotti`: ArrayList che contiene i nomi dei prodotti nel carrello.
-  - `prezzi`: ArrayList con i prezzi dei prodotti.
-  - `pesi`: ArrayList con i pesi selezionati per i prodotti.
-  - `s`: Una stringa utilizzata per formattare la descrizione dei prodotti.
-  - `hbox`: Un `HBox` che contiene il pulsante di rimozione e la descrizione del prodotto.
-  - `prodottoLabel`: Label che contiene le informazioni sul prodotto.
-  - `removeButton`: Un pulsante per rimuovere l'elemento dal carrello.
-  - `index`: Variabile necessaria per gestire correttamente l'indice dell'elemento da rimuovere.
+    - **Descrizione**: Aggiorna la `ListView` che mostra i prodotti presenti nel carrello, insieme ai loro prezzi e pesi, e ricalcola il totale della spesa. Permette inoltre la rimozione dei prodotti dal carrello e aggiorna automaticamente la visualizzazione dopo ogni rimozione.
+
+    - **Variabili**:
+        - **`total`**: Variabile di tipo `double` che tiene traccia del totale della spesa, inizializzata a 0.
+        - **`prodotti`**, **`prezzi`**, **`pesi`**: Tre `ArrayList` che contengono rispettivamente i nomi dei prodotti, i prezzi e i pesi degli articoli nel carrello. Questi array vengono recuperati tramite i metodi statici di `testClass`.
+        - **`s`**: Stringa che viene utilizzata per determinare l'unità di misura del prodotto (ad esempio, "pezzi", "kg", "mazzi"), in base al tipo di prodotto.
+        - **`hbox`**: Oggetto di tipo `HBox` che contiene l'etichetta (`Label`) con la descrizione del prodotto e un pulsante (`Button`) per la rimozione del prodotto dal carrello.
+        - **`prodottoLabel`**: Etichetta (`Label`) che mostra il nome del prodotto, il suo peso, l'unità di misura e il prezzo.
+        - **`removeButton`**: Pulsante (`Button`) che consente di rimuovere il prodotto dal carrello. Ha un'azione associata che permette la rimozione del prodotto e aggiorna la lista e il totale.
+        - **`index`**: Variabile `int` che memorizza l'indice corrente del prodotto nell'`ArrayList`, utile per identificare quale prodotto rimuovere.
+
+    - **Comportamento del metodo**:
+        1. **Pulizia della `ListView`**: Il metodo inizia cancellando tutti gli elementi correnti dalla `ListView` tramite il metodo `cartListView.getItems().clear()`.
+
+        2. **Inizializzazione delle variabili**: Viene inizializzato il totale a 0 e vengono popolati i tre `ArrayList` (`prodotti`, `prezzi`, `pesi`) chiamando i rispettivi metodi di `testClass`.
+
+        3. **Ciclo sui prodotti**: Il metodo scorre ogni prodotto, prezzo e peso della lista. Per ogni iterazione:
+            - Viene creato un `HBox` per contenere le informazioni del prodotto e il pulsante di rimozione.
+            - A seconda del tipo di prodotto (come "carciofi", "ravanelli" o altri prodotti), viene determinata l'unità di misura da usare (pezzi, mazzi o kg) e memorizzata nella stringa `s`.
+            - Viene creata una `Label` (`prodottoLabel`) che visualizza il nome del prodotto, il peso (arrotondato), l'unità di misura e il prezzo del prodotto.
+            - Viene creato un pulsante di rimozione (`removeButton`) con uno stile personalizzato, che quando cliccato rimuove il prodotto dall'elenco tramite il metodo `removeProduct(index)`, aggiorna il colore del pulsante temporaneamente e chiama di nuovo `aggiornaSezCarrello()` per aggiornare la vista.
+
+        4. **Aggiornamento della `ListView`**: Ogni `HBox`, contenente il nome del prodotto e il pulsante di rimozione, viene aggiunto alla `ListView` (`cartListView.getItems().add(hbox)`).
+
+        5. **Calcolo del totale**: Per ogni prodotto, il prezzo viene aggiunto alla variabile `total`. Alla fine del ciclo, il totale viene arrotondato alla seconda cifra decimale con il metodo `arrotondaAlCent(total)`.
+
+        6. **Aggiornamento del totale nella `Label`**: Il totale viene visualizzato aggiornando il testo di `totalLabel`.
 
 3. **`arrotondaAlCent(double value)`**
 - **Descrizione**: Arrotonda un valore numerico al centesimo (due decimali) usando `BigDecimal`.
@@ -136,7 +170,7 @@ Quindi si può intuire la facilità di navigazione e di comprensione per l'utent
 - **Variabili**: Chiamano `aggiuntaProdotto()` con il nome del prodotto, il prezzo al kg e il rispettivo `ComboBox`.
 
 8. **`aggiungiProdotto(String prodotto, double prezzo, double peso)`**
-- **Descrizione**: Aggiunge un prodotto al carrello, interfacciandosi con la classe `ShoppingCart`.
+- **Descrizione**: Aggiunge un prodotto al carrello, interfacciandosi con la classe `testClass`.
 - **Variabili**:
   - `prodotto`: Il nome del prodotto.
   - `prezzo`: Il prezzo totale del prodotto.
@@ -180,17 +214,33 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
 - **Variabili**: Non usa variabili locali ma richiama i metodi `aggiornaSezCarrello()` e `populateComboBox()`.
 
 2. **`aggiornaSezCarrello()`**
-- **Descrizione**: Questo metodo aggiorna il contenuto della `cartListView`, cancellando eventuali elementi precedenti e aggiungendo i prodotti presenti nel carrello.
-- **Variabili**:
-  - `total`: Tiene traccia del totale del carrello.
-  - `prodotti`: ArrayList che contiene i nomi dei prodotti nel carrello.
-  - `prezzi`: ArrayList con i prezzi dei prodotti.
-  - `pesi`: ArrayList con i pesi selezionati per i prodotti.
-  - `s`: Una stringa utilizzata per formattare la descrizione dei prodotti.
-  - `hbox`: Un `HBox` che contiene il pulsante di rimozione e la descrizione del prodotto.
-  - `prodottoLabel`: Label che contiene le informazioni sul prodotto.
-  - `removeButton`: Un pulsante per rimuovere l'elemento dal carrello.
-  - `index`: Variabile necessaria per gestire correttamente l'indice dell'elemento da rimuovere.
+    - **Descrizione**: Aggiorna la `ListView` che mostra i prodotti presenti nel carrello, insieme ai loro prezzi e pesi, e ricalcola il totale della spesa. Permette inoltre la rimozione dei prodotti dal carrello e aggiorna automaticamente la visualizzazione dopo ogni rimozione.
+
+    - **Variabili**:
+        - **`total`**: Variabile di tipo `double` che tiene traccia del totale della spesa, inizializzata a 0.
+        - **`prodotti`**, **`prezzi`**, **`pesi`**: Tre `ArrayList` che contengono rispettivamente i nomi dei prodotti, i prezzi e i pesi degli articoli nel carrello. Questi array vengono recuperati tramite i metodi statici di `testClass`.
+        - **`s`**: Stringa che viene utilizzata per determinare l'unità di misura del prodotto (ad esempio, "pezzi", "kg", "mazzi"), in base al tipo di prodotto.
+        - **`hbox`**: Oggetto di tipo `HBox` che contiene l'etichetta (`Label`) con la descrizione del prodotto e un pulsante (`Button`) per la rimozione del prodotto dal carrello.
+        - **`prodottoLabel`**: Etichetta (`Label`) che mostra il nome del prodotto, il suo peso, l'unità di misura e il prezzo.
+        - **`removeButton`**: Pulsante (`Button`) che consente di rimuovere il prodotto dal carrello. Ha un'azione associata che permette la rimozione del prodotto e aggiorna la lista e il totale.
+        - **`index`**: Variabile `int` che memorizza l'indice corrente del prodotto nell'`ArrayList`, utile per identificare quale prodotto rimuovere.
+
+    - **Comportamento del metodo**:
+        1. **Pulizia della `ListView`**: Il metodo inizia cancellando tutti gli elementi correnti dalla `ListView` tramite il metodo `cartListView.getItems().clear()`.
+
+        2. **Inizializzazione delle variabili**: Viene inizializzato il totale a 0 e vengono popolati i tre `ArrayList` (`prodotti`, `prezzi`, `pesi`) chiamando i rispettivi metodi di `testClass`.
+
+        3. **Ciclo sui prodotti**: Il metodo scorre ogni prodotto, prezzo e peso della lista. Per ogni iterazione:
+            - Viene creato un `HBox` per contenere le informazioni del prodotto e il pulsante di rimozione.
+            - A seconda del tipo di prodotto (come "carciofi", "ravanelli" o altri prodotti), viene determinata l'unità di misura da usare (pezzi, mazzi o kg) e memorizzata nella stringa `s`.
+            - Viene creata una `Label` (`prodottoLabel`) che visualizza il nome del prodotto, il peso (arrotondato), l'unità di misura e il prezzo del prodotto.
+            - Viene creato un pulsante di rimozione (`removeButton`) con uno stile personalizzato, che quando cliccato rimuove il prodotto dall'elenco tramite il metodo `removeProduct(index)`, aggiorna il colore del pulsante temporaneamente e chiama di nuovo `aggiornaSezCarrello()` per aggiornare la vista.
+
+        4. **Aggiornamento della `ListView`**: Ogni `HBox`, contenente il nome del prodotto e il pulsante di rimozione, viene aggiunto alla `ListView` (`cartListView.getItems().add(hbox)`).
+
+        5. **Calcolo del totale**: Per ogni prodotto, il prezzo viene aggiunto alla variabile `total`. Alla fine del ciclo, il totale viene arrotondato alla seconda cifra decimale con il metodo `arrotondaAlCent(total)`.
+
+        6. **Aggiornamento del totale nella `Label`**: Il totale viene visualizzato aggiornando il testo di `totalLabel`.
 
 3. **`arrotondaAlCent(double value)`**
 - **Descrizione**: Arrotonda un valore numerico al centesimo (due decimali) usando `BigDecimal`.
@@ -211,7 +261,7 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
 - **Variabili**: Chiamano `aggiungiRiga()` con il nome del prodotto, il prezzo*peso e il rispettivo peso, dopo un controllo se il peso è stato inserito, richiamando in base alla presenza di esso `immDiConferma()` o `immDiErrore()`.
 
 8. **`aggiungiRiga(String prodotto, double prezzo, double peso)`**
-- **Descrizione**: Aggiunge un prodotto al carrello, interfacciandosi con la classe `ShoppingCart`.
+- **Descrizione**: Aggiunge un prodotto al carrello, interfacciandosi con la classe `testClass`.
 - **Variabili**:
   - `prodotto`: Il nome del prodotto.
   - `prezzo`: Il prezzo totale del prodotto.
@@ -254,17 +304,33 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
 - **Variabili**: Non usa variabili locali ma richiama i metodi `aggiornaSezCarrello()` e `populateComboBox()`.
 
 2. **`aggiornaSezCarrello()`**
-- **Descrizione**: Questo metodo aggiorna il contenuto della `cartListView`, cancellando eventuali elementi precedenti e aggiungendo i prodotti presenti nel carrello.
-- **Variabili**:
-  - `total`: Tiene traccia del totale del carrello.
-  - `prodotti`: ArrayList che contiene i nomi dei prodotti nel carrello.
-  - `prezzi`: ArrayList con i prezzi dei prodotti.
-  - `pesi`: ArrayList con i pesi selezionati per i prodotti.
-  - `s`: Una stringa utilizzata per formattare la descrizione dei prodotti.
-  - `hbox`: Un `HBox` che contiene il pulsante di rimozione e la descrizione del prodotto.
-  - `prodottoLabel`: Label che contiene le informazioni sul prodotto.
-  - `removeButton`: Un pulsante per rimuovere l'elemento dal carrello.
-  - `index`: Variabile necessaria per gestire correttamente l'indice dell'elemento da rimuovere.
+    - **Descrizione**: Aggiorna la `ListView` che mostra i prodotti presenti nel carrello, insieme ai loro prezzi e pesi, e ricalcola il totale della spesa. Permette inoltre la rimozione dei prodotti dal carrello e aggiorna automaticamente la visualizzazione dopo ogni rimozione.
+
+    - **Variabili**:
+        - **`total`**: Variabile di tipo `double` che tiene traccia del totale della spesa, inizializzata a 0.
+        - **`prodotti`**, **`prezzi`**, **`pesi`**: Tre `ArrayList` che contengono rispettivamente i nomi dei prodotti, i prezzi e i pesi degli articoli nel carrello. Questi array vengono recuperati tramite i metodi statici di `testClass`.
+        - **`s`**: Stringa che viene utilizzata per determinare l'unità di misura del prodotto (ad esempio, "pezzi", "kg", "mazzi"), in base al tipo di prodotto.
+        - **`hbox`**: Oggetto di tipo `HBox` che contiene l'etichetta (`Label`) con la descrizione del prodotto e un pulsante (`Button`) per la rimozione del prodotto dal carrello.
+        - **`prodottoLabel`**: Etichetta (`Label`) che mostra il nome del prodotto, il suo peso, l'unità di misura e il prezzo.
+        - **`removeButton`**: Pulsante (`Button`) che consente di rimuovere il prodotto dal carrello. Ha un'azione associata che permette la rimozione del prodotto e aggiorna la lista e il totale.
+        - **`index`**: Variabile `int` che memorizza l'indice corrente del prodotto nell'`ArrayList`, utile per identificare quale prodotto rimuovere.
+
+    - **Comportamento del metodo**:
+        1. **Pulizia della `ListView`**: Il metodo inizia cancellando tutti gli elementi correnti dalla `ListView` tramite il metodo `cartListView.getItems().clear()`.
+
+        2. **Inizializzazione delle variabili**: Viene inizializzato il totale a 0 e vengono popolati i tre `ArrayList` (`prodotti`, `prezzi`, `pesi`) chiamando i rispettivi metodi di `testClass`.
+
+        3. **Ciclo sui prodotti**: Il metodo scorre ogni prodotto, prezzo e peso della lista. Per ogni iterazione:
+            - Viene creato un `HBox` per contenere le informazioni del prodotto e il pulsante di rimozione.
+            - A seconda del tipo di prodotto (come "carciofi", "ravanelli" o altri prodotti), viene determinata l'unità di misura da usare (pezzi, mazzi o kg) e memorizzata nella stringa `s`.
+            - Viene creata una `Label` (`prodottoLabel`) che visualizza il nome del prodotto, il peso (arrotondato), l'unità di misura e il prezzo del prodotto.
+            - Viene creato un pulsante di rimozione (`removeButton`) con uno stile personalizzato, che quando cliccato rimuove il prodotto dall'elenco tramite il metodo `removeProduct(index)`, aggiorna il colore del pulsante temporaneamente e chiama di nuovo `aggiornaSezCarrello()` per aggiornare la vista.
+
+        4. **Aggiornamento della `ListView`**: Ogni `HBox`, contenente il nome del prodotto e il pulsante di rimozione, viene aggiunto alla `ListView` (`cartListView.getItems().add(hbox)`).
+
+        5. **Calcolo del totale**: Per ogni prodotto, il prezzo viene aggiunto alla variabile `total`. Alla fine del ciclo, il totale viene arrotondato alla seconda cifra decimale con il metodo `arrotondaAlCent(total)`.
+
+        6. **Aggiornamento del totale nella `Label`**: Il totale viene visualizzato aggiornando il testo di `totalLabel`.
 
 3. **`arrotondaAlCent(double value)`**
 - **Descrizione**: Arrotonda un valore numerico al centesimo (due decimali) usando `BigDecimal`.
@@ -333,7 +399,7 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
     - **Descrizione**: Aggiunge un prodotto al carrello con nome, prezzo e peso specificati.
     - **Variabili**: Nessuna specifica.
     - **Azioni**:
-      - Usa il metodo di `ShoppingCart` per aggiungere il prodotto al carrello.
+      - Usa il metodo di `testClass` per aggiungere il prodotto al carrello.
 
 14. **`populateComboBox(ComboBox<Double> peso)`**
     - **Descrizione**: Popola una ComboBox con valori di peso da 5.00 a 0.10 kg.
@@ -383,17 +449,33 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
 - **Variabili**: Non usa variabili locali ma richiama i metodi `aggiornaSezCarrello()`, `populateComboBox()`, `populateComboBoxPezzi()`, `populateComboBoxPiccolo()`, `populateComboBoxGrande()` e `sceltaCassetta()`.
 
 2. **`aggiornaSezCarrello()`**
-- **Descrizione**: Questo metodo aggiorna il contenuto della `cartListView`, cancellando eventuali elementi precedenti e aggiungendo i prodotti presenti nel carrello.
-- **Variabili**:
-  - `total`: Tiene traccia del totale del carrello.
-  - `prodotti`: ArrayList che contiene i nomi dei prodotti nel carrello.
-  - `prezzi`: ArrayList con i prezzi dei prodotti.
-  - `pesi`: ArrayList con i pesi selezionati per i prodotti.
-  - `s`: Una stringa utilizzata per formattare la descrizione dei prodotti.
-  - `hbox`: Un `HBox` che contiene il pulsante di rimozione e la descrizione del prodotto.
-  - `prodottoLabel`: Label che contiene le informazioni sul prodotto.
-  - `removeButton`: Un pulsante per rimuovere l'elemento dal carrello.
-  - `index`: Variabile necessaria per gestire correttamente l'indice dell'elemento da rimuovere.
+    - **Descrizione**: Aggiorna la `ListView` che mostra i prodotti presenti nel carrello, insieme ai loro prezzi e pesi, e ricalcola il totale della spesa. Permette inoltre la rimozione dei prodotti dal carrello e aggiorna automaticamente la visualizzazione dopo ogni rimozione.
+
+    - **Variabili**:
+        - **`total`**: Variabile di tipo `double` che tiene traccia del totale della spesa, inizializzata a 0.
+        - **`prodotti`**, **`prezzi`**, **`pesi`**: Tre `ArrayList` che contengono rispettivamente i nomi dei prodotti, i prezzi e i pesi degli articoli nel carrello. Questi array vengono recuperati tramite i metodi statici di `testClass`.
+        - **`s`**: Stringa che viene utilizzata per determinare l'unità di misura del prodotto (ad esempio, "pezzi", "kg", "mazzi"), in base al tipo di prodotto.
+        - **`hbox`**: Oggetto di tipo `HBox` che contiene l'etichetta (`Label`) con la descrizione del prodotto e un pulsante (`Button`) per la rimozione del prodotto dal carrello.
+        - **`prodottoLabel`**: Etichetta (`Label`) che mostra il nome del prodotto, il suo peso, l'unità di misura e il prezzo.
+        - **`removeButton`**: Pulsante (`Button`) che consente di rimuovere il prodotto dal carrello. Ha un'azione associata che permette la rimozione del prodotto e aggiorna la lista e il totale.
+        - **`index`**: Variabile `int` che memorizza l'indice corrente del prodotto nell'`ArrayList`, utile per identificare quale prodotto rimuovere.
+
+    - **Comportamento del metodo**:
+        1. **Pulizia della `ListView`**: Il metodo inizia cancellando tutti gli elementi correnti dalla `ListView` tramite il metodo `cartListView.getItems().clear()`.
+
+        2. **Inizializzazione delle variabili**: Viene inizializzato il totale a 0 e vengono popolati i tre `ArrayList` (`prodotti`, `prezzi`, `pesi`) chiamando i rispettivi metodi di `testClass`.
+
+        3. **Ciclo sui prodotti**: Il metodo scorre ogni prodotto, prezzo e peso della lista. Per ogni iterazione:
+            - Viene creato un `HBox` per contenere le informazioni del prodotto e il pulsante di rimozione.
+            - A seconda del tipo di prodotto (come "carciofi", "ravanelli" o altri prodotti), viene determinata l'unità di misura da usare (pezzi, mazzi o kg) e memorizzata nella stringa `s`.
+            - Viene creata una `Label` (`prodottoLabel`) che visualizza il nome del prodotto, il peso (arrotondato), l'unità di misura e il prezzo del prodotto.
+            - Viene creato un pulsante di rimozione (`removeButton`) con uno stile personalizzato, che quando cliccato rimuove il prodotto dall'elenco tramite il metodo `removeProduct(index)`, aggiorna il colore del pulsante temporaneamente e chiama di nuovo `aggiornaSezCarrello()` per aggiornare la vista.
+
+        4. **Aggiornamento della `ListView`**: Ogni `HBox`, contenente il nome del prodotto e il pulsante di rimozione, viene aggiunto alla `ListView` (`cartListView.getItems().add(hbox)`).
+
+        5. **Calcolo del totale**: Per ogni prodotto, il prezzo viene aggiunto alla variabile `total`. Alla fine del ciclo, il totale viene arrotondato alla seconda cifra decimale con il metodo `arrotondaAlCent(total)`.
+
+        6. **Aggiornamento del totale nella `Label`**: Il totale viene visualizzato aggiornando il testo di `totalLabel`.
 
 3. **`arrotondaAlCent(double value)`**
 - **Descrizione**: Arrotonda un valore numerico al centesimo (due decimali) usando `BigDecimal`.
@@ -443,7 +525,7 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
     - **Descrizione**: Aggiunge un prodotto al carrello con nome, prezzo e peso specificati.
     - **Variabili**: Nessuna specifica.
     - **Azioni**:
-      - Usa il metodo di `ShoppingCart` per aggiungere il prodotto al carrello.
+      - Usa il metodo di `testClass` per aggiungere il prodotto al carrello.
 
 14. **`populateComboBox(ComboBox<Double> peso)`**
     - **Descrizione**: Popola una ComboBox con valori di peso da 5.00 a 0.10 kg.
@@ -654,89 +736,79 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
 
 ### Descrizione delle variabili di classe
 
-1. **`private static final ShoppingCart instance`**
-   - **Descrizione**: Rappresenta l'unica istanza della classe `ShoppingCart`, realizzando il pattern Singleton. Essendo `static` e `final`, questa variabile è condivisa da tutte le istanze della classe e non può essere modificata dopo l'inizializzazione.
-   - **Tipo**: `ShoppingCart`
-   - **Valore**: È inizializzato direttamente con una nuova istanza di `ShoppingCart` al momento della dichiarazione.
-
-2. **`private ArrayList<String> prodotti`**
-   - **Descrizione**: Memorizza la lista dei nomi dei prodotti aggiunti al carrello. È un `ArrayList` di stringhe, che consente di aggiungere, rimuovere e accedere ai nomi dei prodotti in modo dinamico.
-   - **Tipo**: `ArrayList<String>`
-   - **Valore Iniziale**: È inizializzato come una nuova `ArrayList` vuota al momento della dichiarazione.
-
-3. **`private ArrayList<Double> pesi`**
-   - **Descrizione**: Memorizza la lista dei pesi dei prodotti aggiunti al carrello. È un `ArrayList` di numeri a virgola mobile (`Double`), permettendo di gestire i pesi associati ai prodotti in modo dinamico.
-   - **Tipo**: `ArrayList<Double>`
-   - **Valore Iniziale**: È inizializzato come una nuova `ArrayList` vuota al momento della dichiarazione.
-
-4. **`private ArrayList<Double> prezzi`**
-   - **Descrizione**: Memorizza la lista dei prezzi dei prodotti aggiunti al carrello. È un `ArrayList` di numeri a virgola mobile (`Double`), che consente di gestire i prezzi dei prodotti in modo dinamico.
-   - **Tipo**: `ArrayList<Double>`
-   - **Valore Iniziale**: È inizializzato come una nuova `ArrayList` vuota al momento della dichiarazione.
+1. **`prodottiFile`**: Costante `String` che rappresenta il percorso del file per i nomi dei prodotti.
+2. **`pesiFile`**: Costante `String` che rappresenta il percorso del file per i pesi dei prodotti.
+3. **`prezziFile`**: Costante `String` che rappresenta il percorso del file per i prezzi dei prodotti.
 
 ### Descrizione dei metodi del codice Java
 
-1. **`getInstance()`**
-   - **Descrizione**: Fornisce l'unica istanza della classe `ShoppingCart`, implementata come un singleton. Questo metodo garantisce che ci sia solo una copia della classe `ShoppingCart` durante l'esecuzione del programma.
-   - **Variabili di Classe**:
-     - `instance`: Rappresenta l'unica istanza della classe `ShoppingCart`, creata all'inizio e mai modificata, in conformità con il design singleton.
+1. **`addProduct(String prodotto, double prezzo, double peso)`**
+   - **Descrizione**: Aggiunge un prodotto con il suo nome, prezzo e peso, salvandoli rispettivamente nei file associati.
+   - **Variabili**:
+       - **`prodotto`**: Nome del prodotto da aggiungere.
+       - **`prezzo`**: Prezzo del prodotto.
+       - **`peso`**: Peso del prodotto.
    - **Azioni**:
-     - Restituisce l'istanza unica della classe `ShoppingCart`.
+       - Apre i file in modalità append e aggiunge i dettagli del prodotto nei rispettivi file.
+       - Gestisce eventuali eccezioni legate all'I/O.
 
-2. **`addProduct(String prodotto, double prezzo, double peso)`**
-   - **Descrizione**: Aggiunge un nuovo prodotto al carrello, inclusi il nome, il prezzo e il peso.
-   - **Variabili di Classe**:
-     - `prodotti`: Lista che contiene i nomi dei prodotti nel carrello.
-     - `prezzi`: Lista che contiene i prezzi dei prodotti nel carrello.
-     - `pesi`: Lista che contiene i pesi dei prodotti nel carrello.
+2. **`getProdotti()`**
+   - **Descrizione**: Legge tutti i nomi dei prodotti salvati e li restituisce in un `ArrayList` di stringhe.
+   - **Variabili**:
+       - Nessuna variabile di input.
    - **Azioni**:
-     - Aggiunge il nome del prodotto alla lista `prodotti`.
-     - Aggiunge il prezzo del prodotto alla lista `prezzi`.
-     - Aggiunge il peso del prodotto alla lista `pesi`.
+       - Apre il file dei prodotti e legge ogni riga, aggiungendola alla lista dei prodotti.
+       - Restituisce l'`ArrayList` contenente i nomi dei prodotti.
 
-3. **`getProdotti()`**
-   - **Descrizione**: Restituisce la lista dei nomi dei prodotti attualmente presenti nel carrello.
-   - **Variabili di Classe**:
-     - `prodotti`: Lista che contiene i nomi dei prodotti nel carrello.
+3. **`getPesi()`**
+   - **Descrizione**: Legge tutti i pesi dei prodotti salvati e li restituisce in un `ArrayList` di `Double`.
+   - **Variabili**:
+       - Nessuna variabile di input.
    - **Azioni**:
-     - Restituisce la lista `prodotti`.
+       - Apre il file dei pesi, legge e converte ogni riga in un valore `double` aggiungendolo alla lista dei pesi.
+       - Restituisce l'`ArrayList` con i pesi.
 
-4. **`getPesi()`**
-   - **Descrizione**: Restituisce la lista dei pesi dei prodotti presenti nel carrello.
-   - **Variabili di Classe**:
-     - `pesi`: Lista che contiene i pesi dei prodotti nel carrello.
+4. **`getPrezzi()`**
+   - **Descrizione**: Legge tutti i prezzi dei prodotti salvati e li restituisce in un `ArrayList` di `Double`.
+   - **Variabili**:
+        - Nessuna variabile di input.
    - **Azioni**:
-     - Restituisce la lista `pesi`.
+       - Apre il file dei prezzi, legge e converte ogni riga in un valore `double` aggiungendolo alla lista dei prezzi.
+       - Restituisce l'`ArrayList` con i prezzi.
 
-5. **`getPrezzi()`**
-   - **Descrizione**: Restituisce la lista dei prezzi dei prodotti presenti nel carrello.
-   - **Variabili di Classe**:
-     - `prezzi`: Lista che contiene i prezzi dei prodotti nel carrello.
+5. **`removeProduct(int index)`**
+   - **Descrizione**: Rimuove un prodotto e i suoi dati (peso e prezzo) in base all'indice fornito e aggiorna i file corrispondenti.
+   - **Variabili**:
+     - **`index`**: Indice del prodotto da rimuovere.
    - **Azioni**:
-     - Restituisce la lista `prezzi`.
+     - Ottiene le liste dei prodotti, pesi e prezzi dai file.
+     - Rimuove il prodotto, il peso e il prezzo corrispondenti all'indice specificato.
+     - Aggiorna i file sovrascrivendo le nuove liste.
 
 6. **`clear()`**
-   - **Descrizione**: Rimuove tutti i prodotti, i pesi e i prezzi dal carrello, svuotandolo completamente.
-   - **Variabili di Classe**:
-     - `prodotti`: Lista che viene svuotata.
-     - `pesi`: Lista che viene svuotata.
-     - `prezzi`: Lista che viene svuotata.
+   - **Descrizione**: Svuota completamente i file che contengono i prodotti, pesi e prezzi.
+   - **Variabili**:
+       - Nessuna variabile di input.
    - **Azioni**:
-     - Svuota la lista `prodotti`.
-     - Svuota la lista `pesi`.
-     - Svuota la lista `prezzi`.
+       - Svuota i tre file riscrivendoli con contenuto vuoto.
 
-7. **`removeProduct(int index)`**
-   - **Descrizione**: Rimuove un prodotto specifico dal carrello in base all'indice fornito. Se l'indice è valido, il prodotto, il prezzo e il peso corrispondenti vengono rimossi dalle rispettive liste.
-   - **Variabili di Classe**:
-     - `prodotti`: Lista dalla quale viene rimosso l'elemento.
-     - `pesi`: Lista dalla quale viene rimosso l'elemento.
-     - `prezzi`: Lista dalla quale viene rimosso l'elemento.
+7. **`salvaListaSuFile(List<T> lista, String filePath)`**
+   - **Descrizione**: Salva una lista generica di oggetti in un file specificato, sovrascrivendo il contenuto esistente.
+     - **Variabili**:
+         - **`lista`**: Lista di elementi generici da salvare.
+         - **`filePath`**: Percorso del file dove salvare la lista.
+       - **Azioni**:
+           - Scrive ogni elemento della lista nel file specificato.
+           - Gestisce eventuali eccezioni legate all'I/O.
+
+8. **`arrotondaAlCent(double value)`**
+   - **Descrizione**: Arrotonda un valore `double` a due decimali utilizzando `BigDecimal`.
+   - **Variabili**:
+       - **`double value`**: Valore da arrotondare.
    - **Azioni**:
-     - Controlla se l'indice è valido.
-     - Rimuove l'elemento all'indice specificato dalla lista `prodotti`.
-     - Rimuove l'elemento all'indice specificato dalla lista `prezzi`.
-     - Rimuove l'elemento all'indice specificato dalla lista `pesi`.
+       - Usa `BigDecimal` per arrotondare il valore a due decimali.
+       - Restituisce il valore arrotondato.
+
    
 ---
 
@@ -772,15 +844,13 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
 ---
 
 > ## Implementazioni possibili
-   Ecco a seguito una possibile lista di future implementazioni:
+   Ecco al seguito una possibile lista di future implementazioni:
    - Donazioni in base alla spesa per la conclusione;
    - Implementazioni per modifica di prodotti da remoto;
    - Implementazione di azioni grafiche migliori;
    - Implementazione di servizio di consegna;
+   - ~~Implementazione di salvataggio del carrello in locale;~~
    - Implementazione di servizio di registrazione account.
 > ## Conclusioni
 Lavoro realizzato da me con aiuto di dispense in internet.
 Grazie per la lettura.
-
-
-   
