@@ -1,4 +1,5 @@
 # Simulazione di ordinazioni per un fruttivendolo
+![image](https://github.com/user-attachments/assets/1bb03243-e496-44ce-b149-3204a4bbbae7)
 > ## Indice
 1. Introduzione
 2. Struttura dell'app
@@ -19,7 +20,7 @@ Il compito fondamentale del progetto è quello di simulare, dal punto di vista d
 Quindi si può intuire la facilità di navigazione e di comprensione per l'utente nella navigazione sull'app.
 > ## Indicazioni sui metodi realizzati
 > ### MenuController.java
-
+ ![image](https://github.com/user-attachments/assets/70de6305-3229-4b09-8395-ba1994329237)
 ### Descrizione delle variabili di classe
 
 - **`cartListView`**: una `ListView` che contiene gli elementi del carrello, rappresentati come oggetti `HBox`.
@@ -98,9 +99,14 @@ Quindi si può intuire la facilità di navigazione e di comprensione per l'utent
    - **Variabili**:
      - Come nei metodi precedenti, utilizza `fxmlLoader`, `scene` e `stage`.
 
+
+
 ---
 
 > ### FruttaController.java
+
+![image](https://github.com/user-attachments/assets/1d5402ef-f640-4273-b26b-6f3492abfdb0)
+
 
 ### Descrizione delle variabili di classe
 
@@ -196,6 +202,7 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
 ---
 
 > ### PreparatiController.java
+![image](https://github.com/user-attachments/assets/45e34da2-4d15-4a97-8b5b-1c04b71d2553)
 
 ### Descrizione delle variabili di classe
 
@@ -287,6 +294,7 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
 ---
 
 > ### VerduraSimpleController.java
+![image](https://github.com/user-attachments/assets/0a980200-f553-40a4-bd72-7e642a4388bd)
 
 ### Descrizione delle variabili di classe
 
@@ -431,6 +439,7 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
 ---
 
 > ### VerduraInsalateController.java
+![image](https://github.com/user-attachments/assets/30f1d077-1086-4d3b-9b4b-2849cba90399)
 
 ### Descrizione delle variabili di classe
 
@@ -584,6 +593,7 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
 ---
 
 > ### CartController.java
+![image](https://github.com/user-attachments/assets/97398f6e-cdff-4c45-ba2e-61d62a0ceef6)
 
 ### Descrizione delle variabili di classe
 
@@ -732,7 +742,8 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
 
 ---
 
-> ### ShoppingCart.java
+> ### testClass.java
+![image](https://github.com/user-attachments/assets/f183cb03-b005-4dee-a0a2-a8661cfb6f40)
 
 ### Descrizione delle variabili di classe
 
@@ -813,6 +824,7 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
 ---
 
 > ### invioEmail.java
+![image](https://github.com/user-attachments/assets/450f9484-7ae0-4dbf-a7f9-05ce977a06cd)
 
 ### Descrizione delle variabili di classe
 
@@ -842,6 +854,7 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
      - **Invio dell'Email**: Usa il metodo `Transport.send(message)` per inviare l'email tramite il server SMTP configurato.
 
 ---
+![image](https://github.com/user-attachments/assets/0c97b35f-c9b9-4664-ad77-05153bc40e57)
 
 > ## Implementazioni possibili
    Ecco al seguito una possibile lista di future implementazioni:
@@ -851,6 +864,9 @@ In ciascuno di questi metodi, vengono utilizzate variabili come `fxmlLoader`, `s
    - Implementazione di servizio di consegna;
    - ~~Implementazione di salvataggio del carrello in locale;~~
    - Implementazione di servizio di registrazione account.
+---
 > ## Conclusioni
-Lavoro realizzato da me con aiuto di dispense in internet.
+Lavoro realizzato con aiuto di dispense in internet.
 Grazie per la lettura.
+
+Ultima relazione del file: 15-09-24 
