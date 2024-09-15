@@ -15,8 +15,8 @@ public class testClass { // Definizione della classe principale
     public static void addProduct(String prodotto, double prezzo, double peso) {
         try (
                 // Apre i file per la scrittura aggiuntiva (append) utilizzando BufferedWriter
-                BufferedWriter writerProdotti = new BufferedWriter(new FileWriter(prodottiFile, true));
-                BufferedWriter writerPesi = new BufferedWriter(new FileWriter(pesiFile, true));
+                BufferedWriter writerProdotti = new BufferedWriter(new FileWriter(prodottiFile, true)); // uno scrittore bufferizzato memorizza i dati nella cache e li scrive solo quando ha abbastanza memoria a disposizione, per evitare troppi viaggi di andata e ritorno al file system
+                BufferedWriter writerPesi = new BufferedWriter(new FileWriter(pesiFile, true)); //Il true indica la boolean append che dice se aggiungere o meno i dati aggiunti
                 BufferedWriter writerPrezzi = new BufferedWriter(new FileWriter(prezziFile, true))) {
 
             // Aggiunge il nome del prodotto su 1.txt
@@ -41,7 +41,7 @@ public class testClass { // Definizione della classe principale
         ArrayList<String> prodotti = new ArrayList<>(); // Crea una lista per i prodotti
         try (BufferedReader reader = new BufferedReader(new FileReader(prodottiFile))) { // Apre il file prodotti per la lettura
             String linea;
-            while ((linea = reader.readLine()) != null) { // Legge ogni riga fino a fine file
+            while ((linea = reader.readLine()) != null) { // Legge ogni riga fino a fine file cioè fino a quando è scritto
                 prodotti.add(linea); // Aggiunge ogni riga alla lista prodotti
             }
         } catch (IOException e) { // Gestisce eventuali errori durante la lettura
@@ -87,8 +87,8 @@ public class testClass { // Definizione della classe principale
             List<Double> prezzi = getPrezzi(); // Ottiene la lista dei prezzi
 
             // Controllo dell'indice
-            if (index >= 0 && index < prodotti.size()) { // Verifica che l'indice sia valido
-                prodotti.remove(index); // Rimuove il prodotto dall'indice
+            if (index >= 0 && index < prodotti.size()) { // Verifica che l'indice sia valido cioè che esista o non sia minore di zero
+                prodotti.remove(index); // Rimuove il prodotto con indice corrispondente
                 pesi.remove(index); // Rimuove il peso corrispondente
                 prezzi.remove(index); // Rimuove il prezzo corrispondente
 
